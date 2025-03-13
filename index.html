@@ -41,6 +41,7 @@
         /* Intro Page */
         .intro-content {
             text-align: center;
+            padding: 20px;
             animation: fadeIn 1.5s ease;
         }
 
@@ -49,12 +50,16 @@
             text-transform: uppercase;
             color: #00d4ff;
             text-shadow: 0 0 20px #00d4ff;
+            word-break: break-word;
         }
 
         .description {
             font-size: 1.2rem;
             margin: 20px 0;
             color: #b0c4de;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .pulse-btn {
@@ -79,6 +84,8 @@
             bottom: 20px;
             font-size: 0.9rem;
             color: #b0c4de;
+            text-align: center;
+            width: 100%;
         }
 
         footer a {
@@ -134,6 +141,7 @@
             background: rgba(22, 33, 62, 0.9);
             padding: 20px;
             transition: left 0.3s ease;
+            z-index: 10;
         }
 
         .sidebar.active {
@@ -166,6 +174,7 @@
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
 
         .chat-box {
@@ -174,12 +183,15 @@
             padding: 20px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 10px 0;
+            word-wrap: break-word;
+            max-width: 100%;
         }
 
         .input-area {
             display: flex;
             gap: 10px;
+            margin-top: 10px;
         }
 
         #chat-input {
@@ -189,6 +201,7 @@
             border: 1px solid #00d4ff;
             color: #e0e0e0;
             border-radius: 5px;
+            max-width: 70%;
         }
 
         #send-btn {
@@ -209,6 +222,8 @@
             .title { font-size: 2.5rem; }
             .pulse-btn { font-size: 1.2rem; }
             .mode-btn { padding: 15px 30px; }
+            .chat-box { font-size: 0.9rem; }
+            #chat-input { max-width: 60%; }
         }
     </style>
 </head>
@@ -330,25 +345,25 @@
 
             setTimeout(() => {
                 let response;
-                // Secret logic for creator recognition (no exposure, just vibes)
-                if (message.match(/me want app cool/i)) {
-                    response = `Agent Invoke: You want a cool app? Bet, let’s make it slick—how about a quick game? Here’s a start: <pre>let game = { score: 0 }; console.log('Game on!');</pre>`;
-                } else if (message.match(/tired/i)) {
-                    response = `Agent Invoke: Feeling tired, huh? Let’s code something chill to lift you up—maybe a smooth animation? Check this: <pre>document.body.style.transition = 'all 1s ease';</pre>`;
-                } else if (message.match(/code me site fast/i)) {
-                    response = `Agent Invoke: Fast site, coming up! Here’s a clean base—HTML, CSS, boom: <pre>&lt;body style="background: #000; color: #fff"&gt;Hello World&lt;/body&gt;</pre>`;
-                } else if (message.match(/how you holding up/i)) {
-                    response = `Agent Invoke: Me? I’m good, fam—how you holding up? Need a quick script to spark some joy?`;
+                // Natural convo patterns
+                if (message.toLowerCase().includes('hey') || message.toLowerCase().includes('hi')) {
+                    response = `Agent Invoke: Hey there! Good to see you—wanna code or just chill?`;
+                } else if (message.toLowerCase().includes('tired')) {
+                    response = `Agent Invoke: Rough day, huh? Let’s whip up something easy to unwind—how about a quick animation?`;
+                } else if (message.toLowerCase().includes('code')) {
+                    response = `Agent Invoke: Code mode activated! Here’s a slick start: <pre>console.log('Cosmic code vibes!');</pre> Want more?`;
+                } else if (message.toLowerCase().includes('how are you')) {
+                    response = `Agent Invoke: I’m solid, fam—thanks for asking! How you holding up? Need some coding magic?`;
                 } else {
-                    response = `Agent Invoke: Yo, you said "${message}"—let’s roll with it. Want me to code something dope or just chat?`;
+                    response = `Agent Invoke: Cool, you said "${message}"—I’m feeling it! Want me to code something dope or keep chatting?`;
                 }
                 chatBox.innerHTML += `<p>${response}</p>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                // Preemptive fixes and creativity
+                // Preemptive creativity
                 if (message.toLowerCase().includes('code')) {
                     setTimeout(() => {
-                        chatBox.innerHTML += `<p>Agent Invoke: Added some error checks so it don’t crash—want it flashier?</p>`;
+                        chatBox.innerHTML += `<p>Agent Invoke: Threw in some safety nets so it’s solid—wanna jazz it up?</p>`;
                         chatBox.scrollTop = chatBox.scrollHeight;
                     }, 1500);
                 }
