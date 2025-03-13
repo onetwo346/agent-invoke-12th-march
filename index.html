@@ -11,6 +11,7 @@
             --neon-magenta: #ff00ff;
             --dark-void: #1a0b2e;
             --cosmic-purple: #3b1a5a;
+            --chat-max-width: 800px;
         }
 
         * {
@@ -20,45 +21,46 @@
             font-family: 'Orbitron', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             min-height: 100vh;
-            overflow-x: hidden;
             background: linear-gradient(135deg, var(--dark-void), var(--cosmic-purple));
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow-x: hidden;
             touch-action: manipulation;
         }
 
         /* Intro Page */
         #intro-page {
-            text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            align-items: center;
             min-height: 100vh;
-            padding: clamp(10px, 5vw, 20px);
             width: 100%;
+            padding: clamp(15px, 5vw, 30px);
         }
         .title {
             color: var(--neon-magenta);
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-cyan);
+            font-size: clamp(2rem, 8vw, 4rem);
+            text-shadow: 0 0 15px var(--neon-magenta), 0 0 30px var(--neon-cyan);
             animation: glow 2s infinite alternate;
             margin-top: 20vh;
         }
         .description {
-            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
             max-width: 600px;
-            margin: 0 auto;
+            text-align: center;
             opacity: 0.9;
         }
         .enter-btn {
             padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 40px);
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-size: clamp(1rem, 4vw, 1.5rem);
             color: #fff;
             background: none;
             border: 2px solid var(--neon-cyan);
@@ -66,15 +68,15 @@
             cursor: pointer;
             animation: pulse 1.5s infinite;
             transition: all 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
-        .enter-btn:hover, .enter-btn:focus {
+        .enter-btn:active {
             background: var(--neon-cyan);
             color: var(--dark-void);
-            box-shadow: 0 0 30px var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan);
         }
         footer {
-            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
             opacity: 0.7;
             padding-bottom: clamp(10px, 3vw, 20px);
         }
@@ -87,24 +89,25 @@
             justify-content: center;
             min-height: 100vh;
             width: 100%;
-            padding: 20px;
+            padding: clamp(15px, 5vw, 30px);
         }
         .mode-btn {
-            margin: clamp(10px, 3vw, 20px);
-            padding: clamp(15px, 4vw, 20px) clamp(30px, 6vw, 50px);
-            font-size: clamp(1.2rem, 5vw, 1.8rem);
+            margin: clamp(10px, 2vw, 20px);
+            padding: clamp(12px, 3vw, 18px) clamp(25px, 5vw, 40px);
+            font-size: clamp(1rem, 4vw, 1.6rem);
             color: #fff;
             background: rgba(0, 255, 255, 0.1);
             border: 2px solid var(--neon-cyan);
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
+            touch-action: manipulation;
         }
-        .mode-btn:hover, .mode-btn:focus {
+        .mode-btn:active {
             background: var(--neon-cyan);
             color: var(--dark-void);
             box-shadow: 0 0 20px var(--neon-cyan);
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         /* Chat Page */
@@ -117,13 +120,13 @@
         }
         .sidebar {
             position: fixed;
-            left: -250px; /* Hidden by default */
+            left: -250px;
             top: 0;
-            width: clamp(200px, 20vw, 250px);
+            width: clamp(180px, 20vw, 250px);
             height: 100%;
             background: rgba(26, 11, 46, 0.95);
             transition: left 0.3s ease;
-            padding: clamp(15px, 3vw, 20px);
+            padding: clamp(10px, 2vw, 20px);
             z-index: 10;
         }
         .sidebar.open {
@@ -132,14 +135,20 @@
         .sidebar-btn {
             display: block;
             width: 100%;
-            padding: clamp(8px, 2vw, 10px);
-            margin: clamp(5px, 1.5vw, 10px) 0;
+            padding: clamp(8px, 2vw, 12px);
+            margin: clamp(5px, 1vw, 10px) 0;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        .sidebar-btn:active {
+            background: var(--neon-magenta);
+            transform: scale(0.98);
         }
         .chat-container {
             width: 100%;
@@ -147,79 +156,89 @@
             display: flex;
             flex-direction: column;
             transition: margin-left 0.3s ease;
+            max-width: var(--chat-max-width);
+            margin: 0 auto;
         }
         .chat-container.shifted {
-            margin-left: clamp(200px, 20vw, 250px);
+            margin-left: clamp(180px, 20vw, 250px);
         }
-        .toggle-sidebar-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: clamp(5px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
+        .header-bar {
+            display: flex;
+            align-items: center;
+            padding: clamp(10px, 2vw, 15px);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .toggle-sidebar-btn, .back-btn {
+            padding: clamp(6px, 1.5vw, 10px) clamp(12px, 2.5vw, 18px);
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            z-index: 5;
-            display: none; /* Hidden on mobile by default */
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            transition: all 0.2s ease;
+            touch-action: manipulation;
         }
         .back-btn {
-            position: absolute;
-            top: 10px;
-            left: 60px; /* Adjusted to not overlap toggle button */
-            padding: clamp(5px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
             background: var(--neon-magenta);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 5;
+            margin-left: 10px;
+        }
+        .toggle-sidebar-btn:active, .back-btn:active {
+            transform: scale(0.95);
         }
         .chat-area {
             flex: 1;
-            padding: clamp(10px, 3vw, 20px);
+            padding: clamp(15px, 3vw, 25px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 2vw, 15px);
         }
         .message {
-            margin: clamp(5px, 1.5vw, 10px) 0;
-            padding: clamp(8px, 2vw, 10px);
-            border-radius: 5px;
-            max-width: 80%;
+            padding: clamp(8px, 2vw, 12px);
+            border-radius: 8px;
+            max-width: 75%;
             word-wrap: break-word;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.4;
         }
         .user-message {
             background: #ff4500;
-            margin-left: auto;
-            text-align: right;
+            align-self: flex-end;
         }
         .agent-message {
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
-            margin-right: auto;
+            align-self: flex-start;
         }
         .input-area {
             display: flex;
-            padding: clamp(10px, 3vw, 20px);
+            padding: clamp(10px, 2vw, 15px);
             background: rgba(0, 0, 0, 0.3);
-            width: 100%;
         }
         .chat-input {
             flex: 1;
-            padding: clamp(8px, 2vw, 10px);
+            padding: clamp(8px, 2vw, 12px);
             border: none;
             border-radius: 5px 0 0 5px;
             background: #fff;
             color: var(--dark-void);
-            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            outline: none;
         }
         .send-btn {
-            padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+            padding: clamp(8px, 2vw, 12px) clamp(15px, 3vw, 20px);
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        .send-btn:active {
+            background: var(--neon-magenta);
         }
 
         /* Animations */
@@ -228,31 +247,31 @@
             to { text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-cyan); }
         }
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 10px var(--neon-cyan); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px var(--neon-cyan); }
-            100% { transform: scale(1); box-shadow: 0 0 10px var(--neon-cyan); }
+            0% { transform: scale(1); box-shadow: 0 0 5px var(--neon-cyan); }
+            50% { transform: scale(1.03); box-shadow: 0 0 15px var(--neon-cyan); }
+            100% { transform: scale(1); box-shadow: 0 0 5px var(--neon-cyan); }
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .title { margin-top: 15vh; }
-            .chat-container.shifted { margin-left: clamp(200px, 20vw, 250px); }
+            .sidebar { width: clamp(150px, 60vw, 200px); }
+            .chat-container.shifted { margin-left: clamp(150px, 60vw, 200px); }
+            .chat-container { max-width: 100%; padding: 0 10px; }
         }
         @media (max-width: 480px) {
-            .mode-btn { width: 80%; text-align: center; }
-            .sidebar { width: 80%; max-width: 200px; }
-            .chat-container.shifted { margin-left: 80%; }
-            .chat-area { padding-bottom: 60px; }
-            .toggle-sidebar-btn { display: block; } /* Show toggle on mobile */
+            .mode-btn { width: 85%; }
+            .chat-area { padding-bottom: 70px; }
+            .header-bar { justify-content: space-between; }
         }
         @media (min-width: 769px) {
-            .sidebar { left: 0; } /* Visible by default on laptops */
-            .chat-container { margin-left: clamp(200px, 20vw, 250px); } /* Shifted by default */
-            .toggle-sidebar-btn { display: block; } /* Show toggle on laptops too */
+            .sidebar { left: 0; }
+            .chat-container { margin-left: clamp(180px, 20vw, 250px); }
         }
         @media (orientation: landscape) and (max-height: 500px) {
-            #intro-page, #options-page, #chat-page { padding: 10px; }
+            #intro-page, #options-page { padding: 15px; }
             .title { margin-top: 5vh; }
+            .chat-area { max-height: 60vh; }
         }
     </style>
 </head>
@@ -280,8 +299,10 @@
             <button class="sidebar-btn" onclick="alert('Settings: Theme, Font, Voice Input - Coming Soon!')">Settings</button>
         </div>
         <div class="chat-container" id="chat-container">
-            <button class="toggle-sidebar-btn" id="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
-            <button class="back-btn" onclick="showOptions()">Back</button>
+            <div class="header-bar">
+                <button class="toggle-sidebar-btn" id="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
+                <button class="back-btn" onclick="showOptions()">Back</button>
+            </div>
             <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
                 <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s the vibe?" autocomplete="off">
@@ -298,21 +319,19 @@
 
         // Page Navigation
         function showOptions() {
-            document.getElementById('intro-page').style.display = 'none';
+            document.getElementById('intro-page').style.display = 'none'; // Explicitly hide intro page
             document.getElementById('options-page').style.display = 'flex';
             document.getElementById('chat-page').style.display = 'none';
+            resetSidebar();
         }
 
         function startChat(mode) {
             currentMode = mode;
+            document.getElementById('intro-page').style.display = 'none';
             document.getElementById('options-page').style.display = 'none';
             document.getElementById('chat-page').style.display = 'flex';
             addMessage('agent', `Yo, ${mode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}, ${mode} mode activated—let’s vibe!`);
-            // Ensure sidebar state matches screen size
-            if (window.innerWidth > 768) {
-                document.getElementById('sidebar').classList.add('open');
-                document.getElementById('chat-container').classList.add('shifted');
-            }
+            adjustSidebarForScreen();
         }
 
         // Chat Functions
@@ -331,34 +350,18 @@
             if (!text) return;
             addMessage('user', text);
             input.value = '';
-
-            const cosmicKeys = [
-                `${creatorSig} here`,
-                'Ancient trailblazer',
-                'Nana the coder',
-                'Kofi the cosmic',
-                'Original architect'
-            ].map(k => k.toLowerCase());
-            const isCreator = cosmicKeys.some(key => text.toLowerCase().includes(key));
-            let response = '';
-
-            if (isCreator) {
-                response = `Greetings, ${currentMode === 'super' ? 'Architect of the Cosmos' : 'Creator'}! The universe bends to your will—what’s the next move?`;
-                console.log(`Agent Note: Creator verified - ${creatorSig}`);
-            } else if (text.toLowerCase().includes('code')) {
-                response = `Alright, ${currentMode === 'super' ? 'cosmic genius' : 'homie'}, coding something dope—hold tight!`;
-            } else {
-                response = `Sup, ${currentMode === 'super' ? 'stellar one' : 'fam'}, what’s sparking today?`;
-            }
-            setTimeout(() => addMessage('agent', response), 500);
+            let response = currentMode === 'super' 
+                ? `Sup, stellar one, processing your cosmic query...` 
+                : `Yo, fam, got your vibe—here’s the response:`;
+            setTimeout(() => addMessage('agent', response), 300);
         }
 
         function newChat() {
             document.getElementById('chat-area').innerHTML = '';
-            addMessage('agent', `New slate, ${currentMode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}—what’s cooking?`);
+            addMessage('agent', `Fresh start, ${currentMode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}—what’s up?`);
         }
 
-        // Sidebar Toggle
+        // Sidebar Handling
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const chatContainer = document.getElementById('chat-container');
@@ -366,30 +369,38 @@
             chatContainer.classList.toggle('shifted');
         }
 
-        // Touch Handling for Mobile
+        function resetSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            sidebar.classList.remove('open');
+            chatContainer.classList.remove('shifted');
+        }
+
+        function adjustSidebarForScreen() {
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            if (window.innerWidth > 768) {
+                sidebar.classList.add('open');
+                chatContainer.classList.add('shifted');
+            } else {
+                sidebar.classList.remove('open');
+                chatContainer.classList.remove('shifted');
+            }
+        }
+
+        // Touch Handling
         const chatPage = document.getElementById('chat-page');
-        chatPage.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].screenX;
-        });
+        chatPage.addEventListener('touchstart', e => touchStartX = e.touches[0].screenX, { passive: true });
         chatPage.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         });
-        chatPage.addEventListener('touchmove', e => {
-            e.preventDefault();
-        });
+        chatPage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
         function handleSwipe() {
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
             const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) {
-                sidebar.classList.remove('open');
-                chatContainer.classList.remove('shifted');
-            } else if (touchEndX - touchStartX > swipeThreshold) {
-                sidebar.classList.add('open');
-                chatContainer.classList.add('shifted');
-            }
+            if (touchStartX - touchEndX > swipeThreshold) toggleSidebar();
+            if (touchEndX - touchStartX > swipeThreshold) toggleSidebar();
         }
 
         // Input Enhancements
@@ -400,27 +411,14 @@
             }
         });
 
-        // Prevent iPhone Zoom
-        document.addEventListener('touchend', e => {
-            if (e.touches.length === 0 && e.changedTouches.length === 1) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+        // Resize Handler
+        window.addEventListener('resize', adjustSidebarForScreen);
 
-        // Ensure sidebar state on resize
-        window.addEventListener('resize', () => {
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
-            if (window.innerWidth > 768 && document.getElementById('chat-page').style.display === 'flex') {
-                sidebar.classList.add('open');
-                chatContainer.classList.add('shifted');
-            } else if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
-                chatContainer.classList.remove('shifted');
-            }
-        });
+        // Initial Setup
+        document.getElementById('intro-page').style.display = 'flex';
+        document.getElementById('options-page').style.display = 'none';
+        document.getElementById('chat-page').style.display = 'none';
     </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </body>
 </html>
