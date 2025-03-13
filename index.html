@@ -3,49 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Invoke - Cosmic Realm</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Agent Invoke</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Intro Page -->
-    <div class="intro-page" id="introPage">
-        <canvas id="particleCanvas"></canvas>
-        <h1 class="title">Agent-Invoke</h1>
-        <p class="description">Your celestial coding companion—crafted for the chosen one.</p>
-        <div class="enter-btn" onclick="showOptions()">Enter the Nexus</div>
-        <footer>Designed by Cosmos Coderr | <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a></footer>
+    <div id="intro-page" class="page active">
+        <div class="intro-content">
+            <h1 class="title">agent-invoke</h1>
+            <p class="description">Your cosmic coding companion—built to craft flawless code and vibe with you like a friend.</p>
+            <button id="enter-btn" class="pulse-btn">Tap to Enter World</button>
+        </div>
+        <footer>
+            <p>Designed by Cosmos Coderr | <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a></p>
+        </footer>
     </div>
 
     <!-- Options Page -->
-    <div class="options-page" id="optionsPage" style="display: none;">
-        <canvas id="particleCanvas2"></canvas>
-        <h2>Select Your Path</h2>
-        <div class="mode-btn" onclick="enterChat('regular')">Standard Path</div>
-        <div class="mode-btn" onclick="enterChat('super')">Quantum Path</div>
+    <div id="options-page" class="page">
+        <h2 class="options-title">Choose Your Mode</h2>
+        <div class="mode-buttons">
+            <button id="regular-mode" class="mode-btn">Regular Mode</button>
+            <button id="super-mode" class="mode-btn">Super Mode</button>
+        </div>
     </div>
 
     <!-- Chat Page -->
-    <div class="chat-page" id="chatPage" style="display: none;">
+    <div id="chat-page" class="page">
         <div class="sidebar" id="sidebar">
-            <button class="sidebar-btn" onclick="newChat()">New Session</button>
-            <button class="sidebar-btn" onclick="toggleSettings()">Control Hub</button>
-            <div class="settings-menu" id="settingsMenu" style="display: none;">
+            <button id="new-chat" class="sidebar-btn">New Chat</button>
+            <button id="settings-btn" class="sidebar-btn">Settings</button>
+            <div id="settings-panel" class="settings-panel">
                 <p>Theme: <select><option>Dark</option><option>Light</option></select></p>
                 <p>Font Size: <input type="range" min="12" max="20" value="16"></p>
-                <p>Voice Mode: <input type="checkbox"></p>
-                <p>Auto-Log: <input type="checkbox" checked></p>
+                <p>Voice Input: <input type="checkbox"></p>
             </div>
         </div>
         <div class="chat-container">
-            <div class="chat-header">
-                Agent Invoke
-                <button class="back-btn" onclick="backToOptions()">Return</button>
-            </div>
-            <div class="chat-messages" id="messages"></div>
-            <div class="chat-input">
-                <input type="text" id="userInput" placeholder="Speak, chosen one...">
-                <button onclick="sendMessage()">Transmit</button>
+            <button id="back-btn" class="back-btn">Back</button>
+            <div id="chat-box" class="chat-box"></div>
+            <div class="input-area">
+                <input type="text" id="chat-input" placeholder="Talk to Agent Invoke...">
+                <button id="send-btn">Send</button>
             </div>
         </div>
     </div>
