@@ -3,18 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Invoke - Cosmos Coderr's Ally</title>
+    <title>Agent Invoke - Cosmos Coderr's Realm</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">Agent Invoke</div>
-        <div class="chat-messages" id="messages"></div>
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Yo, Ancient One here...">
-            <button onclick="sendMessage()">Send</button>
+    <!-- Intro Page -->
+    <div class="intro-page" id="introPage">
+        <h1 class="title">Agent-Invoke</h1>
+        <p class="description">Your cosmic coding ally—built to vibe, code, and reveal all to the Ancient One.</p>
+        <div class="enter-btn" onclick="showOptions()">Tap to Enter World</div>
+        <footer>Designed by Cosmos Coderr | <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a></footer>
+    </div>
+
+    <!-- Options Page -->
+    <div class="options-page" id="optionsPage" style="display: none;">
+        <h2>Choose Your Mode</h2>
+        <div class="mode-btn" onclick="enterChat('regular')">Regular Mode</div>
+        <div class="mode-btn" onclick="enterChat('super')">Super Mode</div>
+    </div>
+
+    <!-- Chat Page -->
+    <div class="chat-page" id="chatPage" style="display: none;">
+        <div class="sidebar" id="sidebar">
+            <button class="sidebar-btn" onclick="newChat()">New Chat</button>
+            <button class="sidebar-btn" onclick="toggleSettings()">Settings</button>
+            <div class="settings-menu" id="settingsMenu" style="display: none;">
+                <p>Theme: <select><option>Dark</option><option>Light</option></select></p>
+                <p>Font Size: <input type="range" min="12" max="20" value="16"></p>
+                <p>Voice Input: <input type="checkbox"></p>
+                <p>Auto-Save: <input type="checkbox" checked></p>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                Agent Invoke
+                <button class="back-btn" onclick="backToOptions()">Back</button>
+            </div>
+            <div class="chat-messages" id="messages"></div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Yo, Ancient One here...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
