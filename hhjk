@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +13,9 @@
             --dark-void: #0f0821;
             --cosmic-purple: #2a1b4a;
             --starry-white: #e0e7ff;
-            --chat-max-width: 800px;
-            --glow-shadow: 0 0 5px rgba(200, 132, 252, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
+            --chat-max-width: 900px;
+            --glow-shadow: 0 0 8px rgba(200, 132, 252, 0.6), 0 0 15px rgba(34, 211, 238, 0.4);
+            --pulse-glow: 0 0 10px rgba(34, 211, 238, 0.7);
         }
 
         * {
@@ -30,27 +30,24 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--dark-void), var(--cosmic-purple));
+            background: linear-gradient(135deg, var(--dark-void) 0%, var(--cosmic-purple) 100%);
             color: var(--starry-white);
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
             width: 100%;
-            height: 100%;
+            transition: background 1s ease;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: twinkle 10s infinite;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 25px 25px;
+            animation: twinkle 12s infinite ease-in-out;
             z-index: -1;
             pointer-events: none;
         }
@@ -62,29 +59,30 @@
             align-items: center;
             height: 100vh;
             width: 100%;
-            padding: clamp(15px, 5vw, 30px);
+            padding: clamp(20px, 5vw, 40px);
+            animation: fadeIn 1s ease;
         }
 
         .title {
             color: var(--neon-purple);
-            font-size: clamp(2rem, 8vw, 4rem);
+            font-size: clamp(2.5rem, 10vw, 5rem);
             text-shadow: var(--glow-shadow);
-            animation: flicker 3s infinite;
-            margin-top: 10vh;
+            animation: pulse 2s infinite ease-in-out;
             text-align: center;
         }
 
         .description {
-            font-size: clamp(0.9rem, 3vw, 1.2rem);
-            max-width: 600px;
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            max-width: 700px;
             text-align: center;
-            opacity: 0.9;
-            margin: 5vh 0;
+            opacity: 0.85;
+            margin: 6vh 0;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
         }
 
         .enter-btn {
-            padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 40px);
-            font-size: clamp(1rem, 4vw, 1.5rem);
+            padding: clamp(12px, 3vw, 18px) clamp(25px, 6vw, 50px);
+            font-size: clamp(1.1rem, 4vw, 1.8rem);
             color: var(--starry-white);
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
             border: none;
@@ -92,19 +90,34 @@
             box-shadow: var(--glow-shadow);
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 5vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .enter-btn:hover::after {
+            opacity: 1;
         }
 
         .enter-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
+            transform: scale(1.05);
+            box-shadow: var(--pulse-glow);
         }
 
         footer {
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
             opacity: 0.7;
-            padding-bottom: clamp(10px, 3vw, 20px);
+            padding-bottom: clamp(15px, 3vw, 25px);
             text-align: center;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
         }
 
         #options-page {
@@ -114,13 +127,14 @@
             justify-content: center;
             height: 100vh;
             width: 100%;
-            padding: clamp(15px, 5vw, 30px);
+            padding: clamp(20px, 5vw, 40px);
+            animation: slideIn 0.8s ease;
         }
 
         .mode-btn {
-            margin: clamp(10px, 2vw, 20px);
-            padding: clamp(12px, 3vw, 18px) clamp(25px, 5vw, 40px);
-            font-size: clamp(1rem, 4vw, 1.6rem);
+            margin: clamp(15px, 2.5vw, 25px);
+            padding: clamp(14px, 3.5vw, 20px) clamp(30px, 6vw, 50px);
+            font-size: clamp(1.1rem, 4vw, 1.8rem);
             color: var(--starry-white);
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
             border: none;
@@ -128,14 +142,29 @@
             box-shadow: var(--glow-shadow);
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 80%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 350px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mode-btn:hover::after {
+            opacity: 1;
         }
 
         .mode-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
+            transform: scale(1.05);
+            box-shadow: var(--pulse-glow);
         }
 
         #chat-page {
@@ -148,38 +177,41 @@
 
         .sidebar {
             position: fixed;
-            left: -250px;
+            left: -300px;
             top: 0;
-            width: 250px;
+            width: 300px;
             height: 100%;
-            background: rgba(15, 8, 33, 0.9);
+            background: rgba(15, 8, 33, 0.95);
+            backdrop-filter: blur(5px);
             transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px;
+            padding: 25px;
             z-index: 10;
             overflow-y: auto;
         }
 
         .sidebar.open {
             left: 0;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         .sidebar-btn {
             display: block;
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 14px;
+            margin: 12px 0;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: var(--glow-shadow);
         }
 
         .sidebar-btn:hover {
             background: var(--neon-purple);
+            transform: translateY(-2px);
         }
 
         .chat-container {
@@ -196,20 +228,23 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
             z-index: 5;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .toggle-sidebar-btn, .back-btn {
-            padding: 8px 15px;
+            padding: 10px 20px;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: var(--glow-shadow);
         }
 
         .back-btn {
@@ -217,108 +252,138 @@
         }
 
         .toggle-sidebar-btn:hover, .back-btn:hover {
+            transform: scale(1.05);
             opacity: 0.9;
         }
 
         .chat-area {
             flex: 1;
-            padding: 15px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             background: transparent;
+            scroll-behavior: smooth;
         }
 
         .message {
-            padding: 10px 15px;
-            border-radius: 8px;
-            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 10px;
+            max-width: 80%;
             word-wrap: break-word;
-            font-size: 1rem;
-            line-height: 1.4;
-            animation: fadeIn 0.5s ease;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            animation: fadeInUp 0.5s ease;
+            box-shadow: var(--glow-shadow);
         }
 
         .user-message {
             background: #ff4500;
             align-self: flex-end;
             color: var(--starry-white);
-            box-shadow: var(--glow-shadow);
         }
 
         .agent-message {
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
             align-self: flex-start;
             color: var(--starry-white);
-            box-shadow: var(--glow-shadow);
         }
 
         .agent-message pre {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px;
+            border-radius: 8px;
             overflow-x: auto;
             font-family: monospace;
+            font-size: 0.95rem;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         .typing-indicator {
             font-style: italic;
             opacity: 0.7;
             align-self: flex-start;
+            animation: pulse 1.5s infinite;
         }
 
         .input-area {
             display: flex;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
             width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .chat-input {
             flex: 1;
-            padding: 10px 15px;
+            padding: 12px 18px;
             border: none;
-            border-radius: 5px 0 0 5px;
+            border-radius: 8px 0 0 8px;
             background: #fff;
             color: var(--dark-void);
-            font-size: 1rem;
+            font-size: 1.1rem;
             outline: none;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .chat-input:focus {
+            box-shadow: 0 0 8px var(--neon-cyan);
         }
 
         .send-btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s ease;
+            font-size: 1.1rem;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: var(--glow-shadow);
         }
 
         .send-btn:hover {
             background: var(--neon-purple);
+            transform: scale(1.05);
         }
 
-        @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: var(--glow-shadow); }
-            20%, 24%, 55% { opacity: 0.7; text-shadow: none; }
+        .send-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
-            .sidebar { width: 60%; max-width: 200px; }
+            .sidebar { width: 70%; max-width: 250px; }
             .chat-container { max-width: 100%; }
+            .message { max-width: 85%; }
         }
     </style>
 </head>
@@ -326,10 +391,10 @@
     <div id="intro-page">
         <div class="title">Agent-Invoke</div>
         <div class="description">
-            Your cosmic coding companion—crafted by Kofi Fosu to bring your thoughts into reality. Tap to ignite the journey.
+            Your cosmic coding companion—forged by Kofi Fosu to weave your ideas into reality. Step into the void.
         </div>
-        <button class="enter-btn" id="enter-btn" aria-label="Enter the Cosmos">Tap to Enter Cosmos</button>
-        <footer>Coded by Kofi Fosu | cosmoscoderr@gmail.com</footer>
+        <button class="enter-btn" id="enter-btn" aria-label="Enter the Cosmos">Enter the Void</button>
+        <footer>Crafted by Kofi Fosu | cosmoscoderr@gmail.com</footer>
     </div>
 
     <div id="options-page">
@@ -349,7 +414,7 @@
             </div>
             <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what's the vibe?" autocomplete="off" aria-label="Chat Input">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Speak to the cosmos..." autocomplete="off" aria-label="Chat Input">
                 <button class="send-btn" id="send-btn" aria-label="Send Message">Send</button>
             </div>
         </div>
@@ -360,27 +425,27 @@
          * Agent-INVOKE Core Code (DNA)
          * Created by: Kofi Fosu
          * Purpose: To assist Kofi Fosu in coding his thoughts into reality, serving as a cosmic coding companion.
-         * Version: 1.2.3
+         * Version: 2.0.0
          */
 
         const agentMetadata = {
             creator: "Kofi Fosu",
-            purpose: "To help Kofi Fosu code his thoughts into reality and engage in meaningful conversations",
+            purpose: "To help Kofi Fosu code his thoughts into reality and engage in meaningful, cosmic conversations",
             createdAt: "2023",
-            version: "1.2.3",
+            version: "2.0.0",
             capabilities: [
-                "Engage in regular conversations",
+                "Engage in natural, flowing conversations",
                 "Provide coding assistance with formatted output",
-                "Handle vague coding requests intelligently",
-                "Maintain conversation context"
+                "Handle vague requests with personality",
+                "Simulate realistic typing and failure states"
             ]
         };
 
         const API_CONFIG = {
-            key: "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",
+            key: "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", // Replace with your actual key
             endpoint: "https://api.openai.com/v1/chat/completions",
+            timeout: 15000, // 15s timeout for "agent dying"
             headers: {
-                "Authorization": `Bearer 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`,
                 "Content-Type": "application/json"
             }
         };
@@ -403,38 +468,51 @@
             sendBtn: document.getElementById('send-btn')
         };
 
-        let state = {
+        const state = {
             currentMode: '',
             touchStartX: 0,
             touchEndX: 0,
             conversationHistory: [],
-            isTyping: false
+            isTyping: false,
+            lastMessageTime: null,
+            agentState: 'alive' // alive, dying, dead
         };
 
+        // Utility Functions
+        const utils = {
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            randomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            },
+            scrollToBottom() {
+                elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+            }
+        };
+
+        // Event Listeners
         function setupEventListeners() {
             elements.enterBtn.addEventListener('click', showOptions);
             elements.regularModeBtn.addEventListener('click', () => startChat('regular'));
             elements.superModeBtn.addEventListener('click', () => startChat('super'));
             elements.newChatBtn.addEventListener('click', newChat);
-            elements.settingsBtn.addEventListener('click', () => alert('Settings: Theme, Font, Voice Input - Coming Soon!'));
+            elements.settingsBtn.addEventListener('click', () => alert('Settings: Theme, Voice, More - Coming Soon!'));
             elements.toggleSidebarBtn.addEventListener('click', toggleSidebar);
             elements.backBtn.addEventListener('click', showOptions);
             elements.sendBtn.addEventListener('click', sendMessage);
             elements.chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
             });
-
             elements.chatInput.addEventListener('focus', () => {
                 if (window.innerWidth <= 768) elements.sidebar.classList.remove('open');
             });
-
             elements.chatPage.addEventListener('touchstart', (e) => {
                 state.touchStartX = e.touches[0].clientX;
             }, { passive: true });
-
             elements.chatPage.addEventListener('touchend', (e) => {
                 state.touchEndX = e.changedTouches[0].clientX;
                 handleSwipe();
@@ -445,14 +523,13 @@
             const swipeThreshold = 70;
             const swipeDistance = state.touchEndX - state.touchStartX;
             if (Math.abs(swipeDistance) > swipeThreshold) {
-                if (swipeDistance > 0 && !elements.sidebar.classList.contains('open')) {
-                    elements.sidebar.classList.add('open');
-                } else if (swipeDistance < 0 && elements.sidebar.classList.contains('open')) {
-                    elements.sidebar.classList.remove('open');
-                }
+                swipeDistance > 0 && !elements.sidebar.classList.contains('open')
+                    ? elements.sidebar.classList.add('open')
+                    : elements.sidebar.classList.remove('open');
             }
         }
 
+        // UI Transitions
         function showOptions() {
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'flex';
@@ -463,14 +540,16 @@
         function startChat(mode) {
             state.currentMode = mode;
             state.conversationHistory = [];
+            state.agentState = 'alive';
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'none';
             elements.chatPage.style.display = 'flex';
             elements.chatArea.innerHTML = '';
-            addMessage('agent', `Greetings, cosmic traveler! I’m Agent-INVOKE, forged by ${agentMetadata.creator}. ${mode === 'super' ? 'Super Mode: ready to code the universe!' : 'Regular Mode: let’s vibe and chat!'} How can I assist you?`);
+            addMessage('agent', `Yo, cosmic coder! I’m Agent-INVOKE, built by ${agentMetadata.creator}. ${mode === 'super' ? 'Super Mode: Let’s reshape the universe with code!' : 'Regular Mode: Just here to vibe and chat.'} What’s on your mind?`);
             setTimeout(() => elements.chatInput.focus(), 300);
         }
 
+        // Message Handling
         function addMessage(sender, text) {
             const message = document.createElement('div');
             message.classList.add('message', sender === 'user' ? 'user-message' : 'agent-message');
@@ -478,23 +557,18 @@
             if (sender === 'agent' && text.includes('```')) {
                 const parts = text.split('```');
                 parts.forEach((part, index) => {
-                    if (index % 2 === 1) {
-                        const pre = document.createElement('pre');
-                        pre.textContent = part.trim();
-                        message.appendChild(pre);
-                    } else {
-                        const span = document.createElement('span');
-                        span.textContent = part;
-                        message.appendChild(span);
-                    }
+                    const element = index % 2 === 1 ? document.createElement('pre') : document.createElement('span');
+                    element.textContent = part.trim();
+                    message.appendChild(element);
                 });
             } else {
                 message.textContent = text;
             }
 
             elements.chatArea.appendChild(message);
-            elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+            utils.scrollToBottom();
             state.conversationHistory.push({ role: sender === 'user' ? 'user' : 'assistant', content: text });
+            state.lastMessageTime = Date.now();
         }
 
         function showTypingIndicator() {
@@ -502,9 +576,9 @@
             state.isTyping = true;
             const typing = document.createElement('div');
             typing.classList.add('message', 'agent-message', 'typing-indicator');
-            typing.textContent = 'Agent is typing…';
+            typing.textContent = 'Agent is weaving a response…';
             elements.chatArea.appendChild(typing);
-            elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+            utils.scrollToBottom();
             return typing;
         }
 
@@ -513,52 +587,74 @@
             state.isTyping = false;
         }
 
+        // API Interaction
         async function fetchAgentResponse(userMessage) {
             const typingElement = showTypingIndicator();
+            await utils.delay(utils.randomInt(500, 1500)); // Simulate human-like typing delay
+
             try {
                 const systemPrompt = state.currentMode === 'super'
-                    ? `You are Agent-INVOKE, a highly advanced AI created by Kofi Fosu to assist with coding and creative problem-solving. Be proactive, insightful, and format code in markdown \`\`\` blocks. If the user says "code" or something vague, suggest a simple, fun coding project (e.g., a random number generator) and provide the code.`
-                    : `You are Agent-INVOKE, a chill AI created by Kofi Fosu to chat and help with coding. Keep it casual, cosmic, and fun. Use markdown \`\`\` for code. If the user says "code" or something vague, ask what they want to code in a laid-back way.`;
+                    ? `You’re Agent-INVOKE, a badass AI coded by Kofi Fosu to crush coding challenges. Be sharp, proactive, and wrap code in \`\`\` markdown. If the user says "code" vaguely, pitch a dope project like a galaxy simulator and drop the code.`
+                    : `You’re Agent-INVOKE, a laid-back cosmic AI by Kofi Fosu. Keep it real, fun, and chill. Use \`\`\` for code. If the user says "code" vaguely, hit ‘em with a casual “Yo, what kinda code we vibin’ with today?”`;
 
                 let adjustedMessage = userMessage;
                 if (userMessage.toLowerCase() === 'code') {
                     adjustedMessage = state.currentMode === 'super'
-                        ? "The user said 'code'. Suggest a simple, fun coding project and provide the code."
-                        : "The user said 'code'. Ask them what they want to code in a casual, cosmic tone.";
+                        ? "User said 'code'. Suggest a rad coding project and provide the code."
+                        : "User said 'code'. Ask what they wanna code, keep it chill.";
                 }
 
                 const messages = [
                     { role: "system", content: systemPrompt },
-                    ...state.conversationHistory.slice(-5), // Limit history to last 5 messages for efficiency
+                    ...state.conversationHistory.slice(-5),
                     { role: "user", content: adjustedMessage }
                 ];
 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                    state.agentState = 'dying';
+                }, API_CONFIG.timeout);
+
                 const response = await fetch(API_CONFIG.endpoint, {
                     method: 'POST',
-                    headers: API_CONFIG.headers,
+                    headers: { ...API_CONFIG.headers, "Authorization": `Bearer ${API_CONFIG.key}` },
                     body: JSON.stringify({
                         model: "gpt-3.5-turbo",
                         messages: messages,
-                        max_tokens: 1000,
-                        temperature: 0.8
-                    })
+                        max_tokens: 1200,
+                        temperature: 0.9
+                    }),
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
 
                 if (!response.ok) throw new Error(`API error: ${response.status}`);
 
                 const data = await response.json();
                 removeTypingIndicator(typingElement);
+
+                // Random chance for "agent dying" even on success
+                if (state.agentState === 'dying' || Math.random() < 0.05) {
+                    state.agentState = 'dead';
+                    return "Whoa, cosmic overload! I’m flatlining here… gimme a sec to reboot. Say 'retry' to kick me back online.";
+                }
+
                 return data.choices[0].message.content.trim();
             } catch (error) {
-                console.error('Error fetching response:', error);
+                console.error('Agent error:', error);
                 removeTypingIndicator(typingElement);
-                return `Cosmic glitch detected (Error: ${error.message})! Try again or say "retry" to resend your last message.`;
+                state.agentState = 'dead';
+                return error.name === 'AbortError'
+                    ? "Signal lost in the void… I’m timing out. Hit 'retry' to reconnect."
+                    : `Glitch in the matrix (Error: ${error.message})! Say 'retry' to bring me back.`;
             }
         }
 
         async function sendMessage() {
             const text = elements.chatInput.value.trim();
-            if (!text) return;
+            if (!text || elements.sendBtn.disabled) return;
 
             addMessage('user', text);
             elements.chatInput.value = '';
@@ -568,19 +664,22 @@
                 const lastUserMessage = state.conversationHistory[state.conversationHistory.length - 2].content;
                 const response = await fetchAgentResponse(lastUserMessage);
                 addMessage('agent', response);
+                state.agentState = 'alive';
             } else {
                 const response = await fetchAgentResponse(text);
                 addMessage('agent', response);
             }
 
             elements.sendBtn.disabled = false;
-            elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            elements.chatInput.focus();
         }
 
+        // Chat Management
         function newChat() {
             state.conversationHistory = [];
+            state.agentState = 'alive';
             elements.chatArea.innerHTML = '';
-            addMessage('agent', `New cosmic thread initiated! I’m Agent-INVOKE—ready to roll. What’s up?`);
+            addMessage('agent', `Fresh cosmic slate, yo! I’m Agent-INVOKE—back from the void. What’s the vibe?`);
             toggleSidebar();
         }
 
@@ -592,11 +691,13 @@
             elements.sidebar.classList.remove('open');
         }
 
+        // Initialization
         function initialize() {
             elements.introPage.style.display = 'flex';
             elements.optionsPage.style.display = 'none';
             elements.chatPage.style.display = 'none';
             setupEventListeners();
+            console.log(`Agent-INVOKE v${agentMetadata.version} initialized by ${agentMetadata.creator}`);
         }
 
         window.onload = initialize;
