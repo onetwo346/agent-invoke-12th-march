@@ -528,12 +528,20 @@
         }
 
         function handleSwipe() {
+            // Prevent swipe if the chat input is focused (i.e., user is typing)
+            if (document.activeElement === elements.chatInput) {
+                return;
+            }
+
             const swipeThreshold = 100; // Increased threshold to reduce sensitivity
             const swipeDistance = state.touchEndX - state.touchStartX;
             if (Math.abs(swipeDistance) > swipeThreshold) {
-                // Only allow swipe right to open sidebar, remove swipe left
+                // Swipe right (negative distance) to open sidebar
+                // Swipe left (positive distance) to close sidebar
                 if (swipeDistance < 0 && !elements.sidebar.classList.contains('open')) {
                     elements.sidebar.classList.add('open');
+                } else if (swipeDistance > 0 && elements.sidebar.classList.contains('open')) {
+                    elements.sidebar.classList.remove('open');
                 }
             }
         }
