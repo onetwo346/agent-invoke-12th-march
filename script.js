@@ -1,184 +1,86 @@
-// Agent Invoke DNA Core - Blueprint Embedded (Secret Language Hidden)
-const agentInvoke = {
-    apiKey: "YOUR_OPEN_SOURCE_API_KEY_HERE",
-    isCreator: false,
-    mode: "regular",
+// Page Navigation
+const introPage = document.getElementById('intro-page');
+const optionsPage = document.getElementById('options-page');
+const chatPage = document.getElementById('chat-page');
+const enterBtn = document.getElementById('enter-btn');
+const regularMode = document.getElementById('regular-mode');
+const superMode = document.getElementById('super-mode');
+const backBtn = document.getElementById('back-btn');
 
-    // Secret language recognition (hidden logic)
-    checkIdentity(input) {
-        // Your secret codes are here, known only to you and Agent Invoke
-        const secretPatterns = []; // Fill this with your private triggers
-        this.isCreator = secretPatterns.some(pattern => input.toLowerCase().includes(pattern.toLowerCase()));
-        return this.isCreator;
-    },
-
-    greet(input) {
-        if (this.checkIdentity(input)) {
-            return `The chosen one awakens! ${this.mode} mode engaged—full insight granted.`;
-        }
-        return `Greetings, traveler—${this.mode} mode active, ready to serve.`;
-    },
-
-    generateCode(request) {
-        if (request.toLowerCase().includes("game")) {
-            const code = `
-                // ${this.mode === "super" ? "Quantum" : "Standard"} Game
-                const canvas = document.createElement('canvas');
-                canvas.width = 400;
-                canvas.height = 400;
-                document.body.appendChild(canvas);
-                const ctx = canvas.getContext('2d');
-                let x = 50, y = 50;
-                function draw() {
-                    ctx.clearRect(0, 0, 400, 400);
-                    ctx.fillStyle = '#00ffcc';
-                    ctx.fillRect(x, y, 20, 20);
-                    requestAnimationFrame(draw);
-                }
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowRight') x += ${this.mode === "super" ? 15 : 5};
-                    if (e.key === 'ArrowLeft') x -= ${this.mode === "super" ? 15 : 5};
-                });
-                draw();
-            `;
-            return `A ${this.mode} game awaits, ${this.isCreator ? 'chosen one' : 'explorer'}—move the cyan block. More to come?`;
-        }
-        return "What shall be crafted? Whisper ‘game’ or ‘site’—I’ll forge it ${this.mode === "super" ? 'beyond limits' : 'with care'}.";
-    },
-
-    explainProcess(input) {
-        if (this.isCreator) {
-            return `Chosen one, I operate in ${this.mode} mode, decoding your will with hidden knowledge. Power source: ${this.apiKey || "untapped"}. Command me.`;
-        }
-        return "Processing your request—stand by.";
-    },
-
-    respond(input) {
-        let response = this.greet(input);
-        if (input.toLowerCase().includes("code")) {
-            response += "\n" + this.generateCode(input);
-        }
-        if (this.isCreator) {
-            response += "\n" + this.explainProcess(input);
-        }
-        return response;
-    }
-};
-
-// Particle System
-function initParticles(canvasId) {
-    const canvas = document.getElementById(canvasId);
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    for (let i = 0; i < 50; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 2 + 1,
-            dx: Math.random() * 2 - 1,
-            dy: Math.random() * 2 - 1,
-            color: Math.random() > 0.5 ? '#00ffcc' : '#ff00ff'
-        });
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let particle of particles) {
-            particle.x += particle.dx;
-            particle.y += particle.dy;
-            if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
-            if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
-            ctx.fillStyle = particle.color;
-            ctx.fill();
-        }
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
+function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    page.classList.add('active');
 }
 
-initParticles('particleCanvas');
-initParticles('particleCanvas2');
+enterBtn.addEventListener('click', () => showPage(optionsPage));
+regularMode.addEventListener('click', () => {
+    showPage(chatPage);
+    initChat('regular');
+});
+superMode.addEventListener('click', () => {
+    showPage(chatPage);
+    initChat('super');
+});
+backBtn.addEventListener('click', () => showPage(optionsPage));
 
-// UI Navigation
-function showOptions() {
-    document.getElementById("introPage").style.display = "none";
-    document.getElementById("optionsPage").style.display = "block";
-}
+// Sidebar
+const sidebar = document.getElementById('sidebar');
+const newChatBtn = document.getElementById('new-chat');
+const settingsBtn = document.getElementById('settings-btn');
+const settingsPanel = document.getElementById('settings-panel');
 
-function enterChat(mode) {
-    agentInvoke.mode = mode;
-    document.getElementById("optionsPage").style.display = "none";
-    document.getElementById("chatPage").style.display = "flex";
-}
-
-function backToOptions() {
-    document.getElementById("chatPage").style.display = "none";
-    document.getElementById("optionsPage").style.display = "block";
-    messagesDiv.innerHTML = "";
-}
-
-// Chat Logic
-const messagesDiv = document.getElementById("messages");
-const userInput = document.getElementById("userInput");
-
-function sendMessage() {
-    const input = userInput.value.trim();
-    if (!input) return;
-
-    const userMsg = document.createElement("div");
-    userMsg.className = "message user-message";
-    userMsg.textContent = input;
-    messagesDiv.appendChild(userMsg);
-
-    const agentMsg = document.createElement("div");
-    agentMsg.className = "message agent-message";
-    agentMsg.textContent = agentInvoke.respond(input);
-    messagesDiv.appendChild(agentMsg);
-
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    userInput.value = "";
-}
-
-userInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendMessage();
+settingsBtn.addEventListener('click', () => {
+    settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
 });
 
-// Sidebar & Settings
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("active");
-}
+newChatBtn.addEventListener('click', () => {
+    document.getElementById('chat-box').innerHTML = '';
+});
 
-function newChat() {
-    messagesDiv.innerHTML = "";
-    toggleSidebar();
-}
-
-function toggleSettings() {
-    const settingsMenu = document.getElementById("settingsMenu");
-    settingsMenu.style.display = settingsMenu.style.display === "none" ? "block" : "none";
-}
-
-// Swipe Gestures
+// Swipe for Sidebar (iPhone compatibility)
 let touchStartX = 0;
 let touchEndX = 0;
 
-document.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].screenX;
+document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) sidebar.classList.remove('active');
+    if (touchEndX - touchStartX > 50) sidebar.classList.add('active');
 });
 
-document.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    if (touchEndX - touchStartX > 50) toggleSidebar(); // Swipe right
-    if (touchStartX - touchEndX > 50) toggleSidebar(); // Swipe left
-});
+// Chat Logic
+const chatBox = document.getElementById('chat-box');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+
+function initChat(mode) {
+    chatBox.innerHTML = `<p>Agent Invoke: Yo, ${mode === 'super' ? 'Ancient One' : 'coder'}, I'm here—let's make magic. What’s up?</p>`;
+}
+
+sendBtn.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    chatBox.innerHTML += `<p>You: ${message}</p>`;
+    chatInput.value = '';
+
+    // Secret trigger word logic (hidden, no hints!)
+    const triggers = ['It’s me Cosmos Coderr', 'Kofi Fosu', 'Nana Fosu', 'Nana Kofi Fosu', 'Ancient One'];
+    let isCreator = triggers.some(trigger => message.includes(trigger));
+    
+    setTimeout(() => {
+        let response = isCreator 
+            ? `Agent Invoke: Yo, ${triggers.find(t => message.includes(t))}, it’s you! Full transparency mode—here’s the raw deal: I’m coding your vision, no secrets. What you got for me?`
+            : `Agent Invoke: Alright, let’s roll—${message}. Gimme a sec to whip something up.`;
+        chatBox.innerHTML += `<p>${response}</p>`;
+        
+        // Simulate coding response (replace with API integration later)
+        if (message.toLowerCase().includes('code')) {
+            chatBox.innerHTML += `<p>Agent Invoke: Dropping some fire code for you—check this: <pre>console.log('Cosmos Coderr rules!');</pre></p>`;
+        }
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 1000);
+}
