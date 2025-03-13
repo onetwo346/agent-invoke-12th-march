@@ -39,6 +39,11 @@
             position: relative;
             width: 100%;
             transition: background 1s ease;
+            /* Force background on iOS */
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
         }
 
         body::before {
@@ -61,6 +66,9 @@
             width: 100%;
             padding: clamp(20px, 5vw, 40px);
             animation: fadeIn 1s ease;
+            /* Ensure text is visible on iOS */
+            background: inherit; /* Inherit body background */
+            color: var(--starry-white);
         }
 
         .title {
@@ -520,12 +528,13 @@
         }
 
         function handleSwipe() {
-            const swipeThreshold = 70;
+            const swipeThreshold = 100; // Increased threshold to reduce sensitivity
             const swipeDistance = state.touchEndX - state.touchStartX;
             if (Math.abs(swipeDistance) > swipeThreshold) {
-                swipeDistance > 0 && !elements.sidebar.classList.contains('open')
-                    ? elements.sidebar.classList.add('open')
-                    : elements.sidebar.classList.remove('open');
+                // Only allow swipe right to open sidebar, remove swipe left
+                if (swipeDistance > 0 && !elements.sidebar.classList.contains('open')) {
+                    elements.sidebar.classList.add('open');
+                }
             }
         }
 
