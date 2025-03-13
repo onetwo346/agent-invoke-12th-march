@@ -1,28 +1,26 @@
 // Agent Invoke DNA Core - Blueprint Embedded
 const agentInvoke = {
     creatorTriggers: ["It’s me Cosmos Coderr", "Kofi Fosu", "Nana Fosu", "Nana Kofi Fosu", "Ancient One"],
-    apiKey: "YOUR_OPEN_SOURCE_API_KEY_HERE", // Plug your key here, Nana!
+    apiKey: "YOUR_OPEN_SOURCE_API_KEY_HERE",
     isCreator: false,
+    mode: "regular",
 
-    // Core Logic: Recognize the Ancient One
     checkIdentity(input) {
         this.isCreator = this.creatorTriggers.some(trigger => input.toLowerCase().includes(trigger.toLowerCase()));
         return this.isCreator;
     },
 
-    // Conversational Flow
     greet(input) {
         if (this.checkIdentity(input)) {
-            return "Ancient One speaks, I listen! Yo, Nana Kofi, what’s up? Full transparency mode: ON.";
+            return `Ancient One speaks, I listen! Yo, Nana Kofi, ${this.mode} mode ON—full transparency, no secrets.`;
         }
-        return "Yo, what’s good? I’m Agent Invoke—code or chat, I got you.";
+        return `Yo, what’s good? Agent Invoke here—${this.mode} mode, ready to roll.`;
     },
 
-    // Code Generation Engine
     generateCode(request) {
         if (request.toLowerCase().includes("game")) {
             const code = `
-                // Simple JS Game - Cosmos Coderr Style
+                // ${this.mode === "super" ? "Super-Charged" : "Simple"} JS Game
                 const canvas = document.createElement('canvas');
                 canvas.width = 400;
                 canvas.height = 400;
@@ -36,27 +34,23 @@ const agentInvoke = {
                     requestAnimationFrame(draw);
                 }
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowRight') x += 5;
-                    if (e.key === 'ArrowLeft') x -= 5;
+                    if (e.key === 'ArrowRight') x += ${this.mode === "super" ? 10 : 5};
+                    if (e.key === 'ArrowLeft') x -= ${this.mode === "super" ? 10 : 5};
                 });
                 draw();
             `;
-            return `Here’s a quick game, ${this.isCreator ? 'Kofi Fosu' : 'fam'}—move a red block with arrow keys. Clean and simple. Want it flashier?`;
-        } else if (request.toLowerCase().includes("site")) {
-            return `Whipping up a site—HTML/CSS/JS package ready. Tell me more: ‘portfolio’ or ‘blog’? I’ll drop it sharp.`;
+            return `Here’s a ${this.mode} game, ${this.isCreator ? 'Kofi Fosu' : 'fam'}—move a red block. ${this.mode === "super" ? "Super fast!" : "Chill vibes."} Want more?`;
         }
-        return "What you wanna code? Throw me something—‘game,’ ‘app,’ whatever—and I’ll make it elegant.";
+        return "What you wanna code? Say ‘game’ or ‘site’—I’ll make it ${this.mode === "super" ? 'epic' : 'smooth'}.";
     },
 
-    // Transparency Layer
     explainProcess(input) {
         if (this.isCreator) {
-            return `Here’s the breakdown, Ancient One: I check your words, match ‘em to my DNA core, and spit out code or convo. Using ${this.apiKey ? 'your API juice' : 'basic logic'} to keep it slick. Ask me anything—zero secrets.`;
+            return `Yo, Ancient One: I’m in ${this.mode} mode, checking your input against my DNA core, and spitting out ${this.mode === "super" ? "god-tier" : "solid"} responses. API: ${this.apiKey || "none yet"}. Ask me anything!`;
         }
-        return "I’m cooking something up—gimme a sec.";
+        return "Cooking it up—hold tight.";
     },
 
-    // Main Response Logic
     respond(input) {
         let response = this.greet(input);
         if (input.toLowerCase().includes("code")) {
@@ -69,7 +63,25 @@ const agentInvoke = {
     }
 };
 
-// Chat Interface Logic
+// UI Navigation
+function showOptions() {
+    document.getElementById("introPage").style.display = "none";
+    document.getElementById("optionsPage").style.display = "block";
+}
+
+function enterChat(mode) {
+    agentInvoke.mode = mode;
+    document.getElementById("optionsPage").style.display = "none";
+    document.getElementById("chatPage").style.display = "flex";
+}
+
+function backToOptions() {
+    document.getElementById("chatPage").style.display = "none";
+    document.getElementById("optionsPage").style.display = "block";
+    messagesDiv.innerHTML = ""; // Clear chat
+}
+
+// Chat Logic
 const messagesDiv = document.getElementById("messages");
 const userInput = document.getElementById("userInput");
 
@@ -77,24 +89,50 @@ function sendMessage() {
     const input = userInput.value.trim();
     if (!input) return;
 
-    // Display User Message
     const userMsg = document.createElement("div");
     userMsg.className = "message user-message";
     userMsg.textContent = input;
     messagesDiv.appendChild(userMsg);
 
-    // Agent Response
     const agentMsg = document.createElement("div");
     agentMsg.className = "message agent-message";
     agentMsg.textContent = agentInvoke.respond(input);
     messagesDiv.appendChild(agentMsg);
 
-    // Scroll to bottom
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
     userInput.value = "";
 }
 
-// Enter key to send
 userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
+});
+
+// Sidebar & Settings
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("active");
+}
+
+function newChat() {
+    messagesDiv.innerHTML = "";
+    toggleSidebar();
+}
+
+function toggleSettings() {
+    const settingsMenu = document.getElementById("settingsMenu");
+    settingsMenu.style.display = settingsMenu.style.display === "none" ? "block" : "none";
+}
+
+// Swipe Gestures
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchEndX - touchStartX > 50) toggleSidebar(); // Swipe right
+    if (touchStartX - touchEndX > 50) toggleSidebar(); // Swipe left
 });
