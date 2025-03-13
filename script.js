@@ -34,12 +34,12 @@ const agentInvoke = {
                     requestAnimationFrame(draw);
                 }
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowRight') x += ${this.mode === "super" ? 10 : 5};
-                    if (e.key === 'ArrowLeft') x -= ${this.mode === "super" ? 10 : 5};
+                    if (e.key === 'ArrowRight') x += ${this.mode === "super" ? 15 : 5};
+                    if (e.key === 'ArrowLeft') x -= ${this.mode === "super" ? 15 : 5};
                 });
                 draw();
             `;
-            return `Here’s a ${this.mode} game, ${this.isCreator ? 'Kofi Fosu' : 'fam'}—move a red block. ${this.mode === "super" ? "Super fast!" : "Chill vibes."} Want more?`;
+            return `Here’s a ${this.mode} game, ${this.isCreator ? 'Kofi Fosu' : 'fam'}—move a red block. ${this.mode === "super" ? "Hyper speed for the Ancient One!" : "Chill vibes."} Want more?`;
         }
         return "What you wanna code? Say ‘game’ or ‘site’—I’ll make it ${this.mode === "super" ? 'epic' : 'smooth'}.";
     },
