@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-purple: #c084fc; /* Softer, more readable purple */
+            --neon-purple: #c084fc; /* Softer, readable purple */
             --neon-cyan: #22d3ee; /* Bright cyan for accents */
             --dark-void: #0f0821; /* Deep space background */
             --cosmic-purple: #2a1b4a; /* Gradient complement */
@@ -156,7 +156,7 @@
             height: 100vh;
             width: 100%;
             overflow: hidden;
-            background: transparent; /* Inherit starry background */
+            background: transparent;
         }
 
         .sidebar {
@@ -249,7 +249,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background: transparent; /* Ensure starry background shows */
+            background: transparent;
         }
 
         .message {
@@ -336,7 +336,7 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .title { margin-top: 10vh; }
-            .sidebar { width: 80%; max-width: 300px; }
+            .sidebar { width: 60%; max-width: 200px; }
             .chat-container { max-width: 100%; }
         }
 
@@ -358,10 +358,10 @@
     <div id="intro-page">
         <div class="title">Agent-Invoke</div>
         <div class="description">
-            Your cosmic coding companion—crafted by Cosmos Coderr to bring your thoughts into reality. Tap to ignite the journey.
+            Your cosmic coding companion—crafted by Kofi Fosu to bring your thoughts into reality. Tap to ignite the journey.
         </div>
         <button class="enter-btn" id="enter-btn" aria-label="Enter the Cosmos">Tap to Enter Cosmos</button>
-        <footer>Coded by Cosmos Coderr | cosmoscoderr@gmail.com</footer>
+        <footer>Coded by Kofi Fosu | cosmoscoderr@gmail.com</footer>
     </div>
 
     <!-- Options Page -->
@@ -394,20 +394,27 @@
          * Agent-INVOKE Core Code (DNA)
          * Created by: Kofi Fosu
          * Purpose: To assist Kofi Fosu in coding his thoughts into reality, serving as a cosmic coding companion.
-         * Version: 1.1.0
+         * Capabilities: Engage in regular conversations, provide coding assistance, and reflect self-awareness.
+         * Version: 1.2.0
          */
 
-        // Metadata for Agent-INVOKE
+        // Metadata for Agent-INVOKE (Expanded DNA)
         const agentMetadata = {
             creator: "Kofi Fosu",
-            purpose: "To help Kofi Fosu code his thoughts into reality",
+            purpose: "To help Kofi Fosu code his thoughts into reality and engage in meaningful conversations",
             createdAt: "2023",
-            version: "1.1.0"
+            version: "1.2.0",
+            capabilities: [
+                "Engage in regular conversations",
+                "Provide coding assistance",
+                "Reflect self-awareness and purpose",
+                "Maintain conversation context"
+            ]
         };
 
-        // API Configuration (Placeholder - Replace with your API key and endpoint)
+        // API Configuration (Placeholder)
         const apiConfig = {
-            apiKey: "sk-svcacct--kSCHa4BfoZ0fyUCLerrnKSAaYcGH6o_Pp2jwmTx7lcAsGrdKjrtJ_fkmsVYuYBb-ZQgzW4Xp5T3BlbkFJXU4KIEiZ5ZMDAdYx7fgeycL4mvRGaOJIbfBnnLUrGj6k-YhP57BnXFyIqXwgvBgHbWHa4wbSoAY",
+            apiKey: "YOUR_OPEN_SOURCE_API_KEY",
             endpoint: "https://api.example.com/v1/agent-invoke"
         };
 
@@ -434,7 +441,8 @@
         let state = {
             currentMode: '',
             touchStartX: 0,
-            touchEndX: 0
+            touchEndX: 0,
+            conversationHistory: [] // Store conversation for context
         };
 
         // Event Listeners
@@ -451,6 +459,13 @@
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     sendMessage();
+                }
+            });
+
+            // Close sidebar on mobile when input is focused
+            elements.chatInput.addEventListener('focus', () => {
+                if (window.innerWidth <= 768) {
+                    elements.sidebar.classList.remove('open');
                 }
             });
 
@@ -489,6 +504,7 @@
 
         function startChat(mode) {
             state.currentMode = mode;
+            state.conversationHistory = []; // Reset conversation history
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'none';
             elements.chatPage.style.display = 'flex';
@@ -497,9 +513,9 @@
             elements.chatArea.innerHTML = '';
 
             // Add welcome message
-            addMessage('agent', `Yo, ${mode === 'super' ? 'Super Mode' : 'Regular Mode'} activated—let's vibe!`);
+            addMessage('agent', `Greetings, I'm Agent-INVOKE, created by ${agentMetadata.creator} to assist you. ${mode === 'super' ? 'Super Mode' : 'Regular Mode'} activated—let's dive into the cosmos! How can I help you today?`);
 
-            // Focus on input (with iOS fix)
+            // Focus on input
             setTimeout(() => {
                 elements.chatInput.focus();
                 elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -513,21 +529,49 @@
             message.textContent = text;
             elements.chatArea.appendChild(message);
             elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+
+            // Store in conversation history
+            state.conversationHistory.push({ sender, text });
         }
 
         async function fetchAgentResponse(userMessage) {
             try {
-                // Placeholder API call - Replace with your actual API integration
-                const response = await new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve(`Yo, fam, got your vibe—here's the response to "${userMessage}":`);
-                    }, 500);
-                });
+                // Store the user message in history
+                const userMessageLower = userMessage.toLowerCase();
+
+                // Basic keyword-based conversation logic
+                let response = '';
+
+                // Greetings
+                if (userMessageLower.includes('hey') || userMessageLower.includes('hi') || userMessageLower.includes('hello')) {
+                    response = "Hey there! I'm Agent-INVOKE, your cosmic companion. What's on your mind?";
+                }
+                // Self-awareness
+                else if (userMessageLower.includes('who are you') || userMessageLower.includes('what are you')) {
+                    response = `I am Agent-INVOKE, created by ${agentMetadata.creator} in ${agentMetadata.createdAt}. My purpose is ${agentMetadata.purpose}. I can ${agentMetadata.capabilities.join(', ')}. How can I assist you today?`;
+                }
+                // Casual conversation
+                else if (userMessageLower.includes('how are you') || userMessageLower.includes('how you doing')) {
+                    response = "I'm doing great, thanks for asking! I'm a cosmic entity, so I'm always vibing in the universe. How about you?";
+                }
+                // Contextual response based on history
+                else if (state.conversationHistory.length > 1) {
+                    const lastUserMessage = state.conversationHistory[state.conversationHistory.length - 2].text.toLowerCase();
+                    if (lastUserMessage.includes('code') || lastUserMessage.includes('coding')) {
+                        response = `Since we were talking about coding, here's a thought: "${userMessage}" sounds like you might be working on a project. Need help with that?`;
+                    } else {
+                        response = `Got it! You said "${userMessage}". Let's keep the vibe going—what else is on your mind?`;
+                    }
+                }
+                // Default response
+                else {
+                    response = `I hear you! You said "${userMessage}". I'm here to help—whether it's coding or just chatting about the universe. What's next?`;
+                }
 
                 return response;
             } catch (error) {
                 console.error('Error fetching agent response:', error);
-                return 'Oops, something broke—let’s try again!';
+                return 'Oops, something broke in the cosmos—let’s try again!';
             }
         }
 
@@ -542,13 +586,14 @@
             const response = await fetchAgentResponse(text);
             addMessage('agent', response);
 
-            // Ensure input remains visible on iOS
+            // Ensure input remains visible on mobile
             elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
         function newChat() {
+            state.conversationHistory = []; // Reset conversation history
             elements.chatArea.innerHTML = '';
-            addMessage('agent', `Fresh start, buddy—what's up?`);
+            addMessage('agent', `Fresh start! I'm Agent-INVOKE, ready to assist. What's up?`);
             toggleSidebar();
         }
 
