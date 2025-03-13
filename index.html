@@ -8,11 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-purple: #c084fc; /* Softer, readable purple */
-            --neon-cyan: #22d3ee; /* Bright cyan for accents */
-            --dark-void: #0f0821; /* Deep space background */
-            --cosmic-purple: #2a1b4a; /* Gradient complement */
-            --starry-white: #e0e7ff; /* Soft white for text */
+            --neon-purple: #c084fc;
+            --neon-cyan: #22d3ee;
+            --dark-void: #0f0821;
+            --cosmic-purple: #2a1b4a;
+            --starry-white: #e0e7ff;
             --chat-max-width: 800px;
             --glow-shadow: 0 0 5px rgba(200, 132, 252, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
         }
@@ -40,7 +40,6 @@
             height: 100%;
         }
 
-        /* Starry Background Animation */
         body::before {
             content: '';
             position: fixed;
@@ -55,7 +54,6 @@
             pointer-events: none;
         }
 
-        /* Intro Page */
         #intro-page {
             display: flex;
             flex-direction: column;
@@ -101,11 +99,6 @@
             box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
         }
 
-        .enter-btn:active {
-            transform: translateY(0);
-            box-shadow: var(--glow-shadow);
-        }
-
         footer {
             font-size: clamp(0.7rem, 2vw, 0.9rem);
             opacity: 0.7;
@@ -113,7 +106,6 @@
             text-align: center;
         }
 
-        /* Options Page */
         #options-page {
             display: none;
             flex-direction: column;
@@ -145,12 +137,6 @@
             box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
         }
 
-        .mode-btn:active {
-            transform: translateY(0);
-            box-shadow: var(--glow-shadow);
-        }
-
-        /* Chat Page */
         #chat-page {
             display: none;
             height: 100vh;
@@ -195,10 +181,6 @@
             background: var(--neon-purple);
         }
 
-        .sidebar-btn:active {
-            transform: scale(0.98);
-        }
-
         .chat-container {
             width: 100%;
             height: 100vh;
@@ -237,15 +219,10 @@
             opacity: 0.9;
         }
 
-        .toggle-sidebar-btn:active, .back-btn:active {
-            transform: scale(0.95);
-        }
-
         .chat-area {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -276,6 +253,20 @@
             box-shadow: var(--glow-shadow);
         }
 
+        .agent-message pre {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+
+        .typing-indicator {
+            font-style: italic;
+            opacity: 0.7;
+            align-self: flex-start;
+        }
+
         .input-area {
             display: flex;
             padding: 10px;
@@ -294,10 +285,6 @@
             outline: none;
         }
 
-        .chat-input:focus {
-            box-shadow: 0 0 5px var(--neon-cyan);
-        }
-
         .send-btn {
             padding: 10px 20px;
             background: var(--neon-cyan);
@@ -313,11 +300,6 @@
             background: var(--neon-purple);
         }
 
-        .send-btn:active {
-            background: var(--neon-purple);
-        }
-
-        /* Animations */
         @keyframes flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: var(--glow-shadow); }
             20%, 24%, 55% { opacity: 0.7; text-shadow: none; }
@@ -333,28 +315,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .title { margin-top: 10vh; }
             .sidebar { width: 60%; max-width: 200px; }
             .chat-container { max-width: 100%; }
-        }
-
-        @media (max-width: 480px) {
-            .mode-btn { width: 85%; }
-            .chat-area { padding: 10px; }
-            .message { max-width: 85%; }
-        }
-
-        @media (orientation: landscape) and (max-height: 500px) {
-            .title { margin-top: 5vh; }
-            .description { margin: 2vh 0; }
-            .enter-btn { margin-bottom: 2vh; }
         }
     </style>
 </head>
 <body>
-    <!-- Intro Page -->
     <div id="intro-page">
         <div class="title">Agent-Invoke</div>
         <div class="description">
@@ -364,13 +331,11 @@
         <footer>Coded by Kofi Fosu | cosmoscoderr@gmail.com</footer>
     </div>
 
-    <!-- Options Page -->
     <div id="options-page">
         <button class="mode-btn" id="regular-mode-btn" aria-label="Start Regular Mode">Regular Mode</button>
         <button class="mode-btn" id="super-mode-btn" aria-label="Start Super Mode">Super Mode</button>
     </div>
 
-    <!-- Chat Page -->
     <div id="chat-page">
         <div class="sidebar" id="sidebar">
             <button class="sidebar-btn" id="new-chat-btn" aria-label="Start New Chat">New Chat</button>
@@ -394,35 +359,31 @@
          * Agent-INVOKE Core Code (DNA)
          * Created by: Kofi Fosu
          * Purpose: To assist Kofi Fosu in coding his thoughts into reality, serving as a cosmic coding companion.
-         * Capabilities: Engage in regular conversations, provide coding assistance, and reflect self-awareness.
-         * Version: 1.2.0
+         * Version: 1.2.3
          */
 
-        // Metadata for Agent-INVOKE (Expanded DNA)
         const agentMetadata = {
             creator: "Kofi Fosu",
             purpose: "To help Kofi Fosu code his thoughts into reality and engage in meaningful conversations",
             createdAt: "2023",
-            version: "1.2.0",
+            version: "1.2.3",
             capabilities: [
                 "Engage in regular conversations",
-                "Provide coding assistance",
-                "Reflect self-awareness and purpose",
+                "Provide coding assistance with formatted output",
+                "Handle vague coding requests intelligently",
                 "Maintain conversation context"
             ]
         };
 
-        // API Configuration (Placeholder)
         const API_CONFIG = {
-            key: "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", // Replace with your actual OpenAI API key
+            key: "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",
             endpoint: "https://api.openai.com/v1/chat/completions",
             headers: {
-                "Authorization": `Bearer ${"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"}`,
+                "Authorization": `Bearer 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`,
                 "Content-Type": "application/json"
             }
         };
 
-        // DOM Elements
         const elements = {
             introPage: document.getElementById('intro-page'),
             optionsPage: document.getElementById('options-page'),
@@ -441,15 +402,14 @@
             sendBtn: document.getElementById('send-btn')
         };
 
-        // State
         let state = {
             currentMode: '',
             touchStartX: 0,
             touchEndX: 0,
-            conversationHistory: [] // Store conversation for context
+            conversationHistory: [],
+            isTyping: false
         };
 
-        // Event Listeners
         function setupEventListeners() {
             elements.enterBtn.addEventListener('click', showOptions);
             elements.regularModeBtn.addEventListener('click', () => startChat('regular'));
@@ -466,14 +426,10 @@
                 }
             });
 
-            // Close sidebar on mobile when input is focused
             elements.chatInput.addEventListener('focus', () => {
-                if (window.innerWidth <= 768) {
-                    elements.sidebar.classList.remove('open');
-                }
+                if (window.innerWidth <= 768) elements.sidebar.classList.remove('open');
             });
 
-            // Touch swipe handlers
             elements.chatPage.addEventListener('touchstart', (e) => {
                 state.touchStartX = e.touches[0].clientX;
             }, { passive: true });
@@ -484,11 +440,9 @@
             }, { passive: true });
         }
 
-        // Swipe Handling
         function handleSwipe() {
             const swipeThreshold = 70;
             const swipeDistance = state.touchEndX - state.touchStartX;
-
             if (Math.abs(swipeDistance) > swipeThreshold) {
                 if (swipeDistance > 0 && !elements.sidebar.classList.contains('open')) {
                     elements.sidebar.classList.add('open');
@@ -498,7 +452,6 @@
             }
         }
 
-        // Page Navigation Functions
         function showOptions() {
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'flex';
@@ -508,74 +461,97 @@
 
         function startChat(mode) {
             state.currentMode = mode;
-            state.conversationHistory = []; // Reset conversation history
+            state.conversationHistory = [];
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'none';
             elements.chatPage.style.display = 'flex';
-
-            // Clear previous messages
             elements.chatArea.innerHTML = '';
-
-            // Add welcome message
-            addMessage('agent', `Greetings, I'm Agent-INVOKE, created by ${agentMetadata.creator} to assist you. ${mode === 'super' ? 'Super Mode' : 'Regular Mode'} activated—let's dive into the cosmos! How can I help you today?`);
-
-            // Focus on input
-            setTimeout(() => {
-                elements.chatInput.focus();
-                elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            }, 300);
+            addMessage('agent', `Greetings, cosmic traveler! I’m Agent-INVOKE, forged by ${agentMetadata.creator}. ${mode === 'super' ? 'Super Mode: ready to code the universe!' : 'Regular Mode: let’s vibe and chat!'} How can I assist you?`);
+            setTimeout(() => elements.chatInput.focus(), 300);
         }
 
-        // Chat Functions
         function addMessage(sender, text) {
             const message = document.createElement('div');
             message.classList.add('message', sender === 'user' ? 'user-message' : 'agent-message');
-            message.textContent = text;
+            
+            if (sender === 'agent' && text.includes('```')) {
+                const parts = text.split('```');
+                parts.forEach((part, index) => {
+                    if (index % 2 === 1) {
+                        const pre = document.createElement('pre');
+                        pre.textContent = part.trim();
+                        message.appendChild(pre);
+                    } else {
+                        const span = document.createElement('span');
+                        span.textContent = part;
+                        message.appendChild(span);
+                    }
+                });
+            } else {
+                message.textContent = text;
+            }
+
             elements.chatArea.appendChild(message);
             elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+            state.conversationHistory.push({ role: sender === 'user' ? 'user' : 'assistant', content: text });
+        }
 
-            // Store in conversation history
-            state.conversationHistory.push({ sender, text });
+        function showTypingIndicator() {
+            if (state.isTyping) return;
+            state.isTyping = true;
+            const typing = document.createElement('div');
+            typing.classList.add('message', 'agent-message', 'typing-indicator');
+            typing.textContent = 'Agent is typing…';
+            elements.chatArea.appendChild(typing);
+            elements.chatArea.scrollTop = elements.chatArea.scrollHeight;
+            return typing;
+        }
+
+        function removeTypingIndicator(typingElement) {
+            if (typingElement) typingElement.remove();
+            state.isTyping = false;
         }
 
         async function fetchAgentResponse(userMessage) {
+            const typingElement = showTypingIndicator();
             try {
-                // Store the user message in history
-                const userMessageLower = userMessage.toLowerCase();
+                const systemPrompt = state.currentMode === 'super'
+                    ? `You are Agent-INVOKE, a highly advanced AI created by Kofi Fosu to assist with coding and creative problem-solving. Be proactive, insightful, and format code in markdown \`\`\` blocks. If the user says "code" or something vague, suggest a simple, fun coding project (e.g., a random number generator) and provide the code.`
+                    : `You are Agent-INVOKE, a chill AI created by Kofi Fosu to chat and help with coding. Keep it casual, cosmic, and fun. Use markdown \`\`\` for code. If the user says "code" or something vague, ask what they want to code in a laid-back way.`;
 
-                // Basic keyword-based conversation logic
-                let response = '';
-
-                // Greetings
-                if (userMessageLower.includes('hey') || userMessageLower.includes('hi') || userMessageLower.includes('hello')) {
-                    response = "Hey there! I'm Agent-INVOKE, your cosmic companion. What's on your mind?";
-                }
-                // Self-awareness
-                else if (userMessageLower.includes('who are you') || userMessageLower.includes('what are you')) {
-                    response = `I am Agent-INVOKE, created by ${agentMetadata.creator} in ${agentMetadata.createdAt}. My purpose is ${agentMetadata.purpose}. I can ${agentMetadata.capabilities.join(', ')}. How can I assist you today?`;
-                }
-                // Casual conversation
-                else if (userMessageLower.includes('how are you') || userMessageLower.includes('how you doing')) {
-                    response = "I'm doing great, thanks for asking! I'm a cosmic entity, so I'm always vibing in the universe. How about you?";
-                }
-                // Contextual response based on history
-                else if (state.conversationHistory.length > 1) {
-                    const lastUserMessage = state.conversationHistory[state.conversationHistory.length - 2].text.toLowerCase();
-                    if (lastUserMessage.includes('code') || lastUserMessage.includes('coding')) {
-                        response = `Since we were talking about coding, here's a thought: "${userMessage}" sounds like you might be working on a project. Need help with that?`;
-                    } else {
-                        response = `Got it! You said "${userMessage}". Let's keep the vibe going—what else is on your mind?`;
-                    }
-                }
-                // Default response
-                else {
-                    response = `I hear you! You said "${userMessage}". I'm here to help—whether it's coding or just chatting about the universe. What's next?`;
+                let adjustedMessage = userMessage;
+                if (userMessage.toLowerCase() === 'code') {
+                    adjustedMessage = state.currentMode === 'super'
+                        ? "The user said 'code'. Suggest a simple, fun coding project and provide the code."
+                        : "The user said 'code'. Ask them what they want to code in a casual, cosmic tone.";
                 }
 
-                return response;
+                const messages = [
+                    { role: "system", content: systemPrompt },
+                    ...state.conversationHistory.slice(-5), // Limit history to last 5 messages for efficiency
+                    { role: "user", content: adjustedMessage }
+                ];
+
+                const response = await fetch(API_CONFIG.endpoint, {
+                    method: 'POST',
+                    headers: API_CONFIG.headers,
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: messages,
+                        max_tokens: 1000,
+                        temperature: 0.8
+                    })
+                });
+
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+                const data = await response.json();
+                removeTypingIndicator(typingElement);
+                return data.choices[0].message.content.trim();
             } catch (error) {
-                console.error('Error fetching agent response:', error);
-                return 'Oops, something broke in the cosmos—let’s try again!';
+                console.error('Error fetching response:', error);
+                removeTypingIndicator(typingElement);
+                return `Cosmic glitch detected (Error: ${error.message})! Try again or say "retry" to resend your last message.`;
             }
         }
 
@@ -585,23 +561,28 @@
 
             addMessage('user', text);
             elements.chatInput.value = '';
+            elements.sendBtn.disabled = true;
 
-            // Fetch response
-            const response = await fetchAgentResponse(text);
-            addMessage('agent', response);
+            if (text.toLowerCase() === 'retry' && state.conversationHistory.length > 1) {
+                const lastUserMessage = state.conversationHistory[state.conversationHistory.length - 2].content;
+                const response = await fetchAgentResponse(lastUserMessage);
+                addMessage('agent', response);
+            } else {
+                const response = await fetchAgentResponse(text);
+                addMessage('agent', response);
+            }
 
-            // Ensure input remains visible on mobile
+            elements.sendBtn.disabled = false;
             elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
         function newChat() {
-            state.conversationHistory = []; // Reset conversation history
+            state.conversationHistory = [];
             elements.chatArea.innerHTML = '';
-            addMessage('agent', `Fresh start! I'm Agent-INVOKE, ready to assist. What's up?`);
+            addMessage('agent', `New cosmic thread initiated! I’m Agent-INVOKE—ready to roll. What’s up?`);
             toggleSidebar();
         }
 
-        // Sidebar Functions
         function toggleSidebar() {
             elements.sidebar.classList.toggle('open');
         }
@@ -610,7 +591,6 @@
             elements.sidebar.classList.remove('open');
         }
 
-        // Initialize App
         function initialize() {
             elements.introPage.style.display = 'flex';
             elements.optionsPage.style.display = 'none';
@@ -618,7 +598,6 @@
             setupEventListeners();
         }
 
-        // Start the app
         window.onload = initialize;
     </script>
 </body>
