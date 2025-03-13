@@ -2,24 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Agent-Invoke</title>
     <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-magenta: #ff00ff;
+            --dark-void: #1a0b2e;
+            --cosmic-purple: #3b1a5a;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Orbitron', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1a0b2e, #3b1a5a);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--dark-void), var(--cosmic-purple));
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: manipulation;
         }
 
         /* Intro Page */
@@ -28,41 +39,44 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 100vh;
-            padding: 20px;
+            min-height: 100vh;
+            padding: clamp(10px, 5vw, 20px);
+            width: 100%;
         }
         .title {
-            color: #ff00ff;
-            font-size: 4rem;
-            text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+            color: var(--neon-magenta);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-cyan);
             animation: glow 2s infinite alternate;
             margin-top: 20vh;
         }
         .description {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 3vw, 1.2rem);
             max-width: 600px;
+            margin: 0 auto;
             opacity: 0.9;
         }
         .enter-btn {
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 40px);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             color: #fff;
             background: none;
-            border: 2px solid #00ffff;
+            border: 2px solid var(--neon-cyan);
             border-radius: 50px;
             cursor: pointer;
             animation: pulse 1.5s infinite;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
-        .enter-btn:hover {
-            background: #00ffff;
-            color: #1a0b2e;
-            box-shadow: 0 0 30px #00ffff;
+        .enter-btn:hover, .enter-btn:focus {
+            background: var(--neon-cyan);
+            color: var(--dark-void);
+            box-shadow: 0 0 30px var(--neon-cyan);
         }
         footer {
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
             opacity: 0.7;
-            padding-bottom: 20px;
+            padding-bottom: clamp(10px, 3vw, 20px);
         }
 
         /* Options Page */
@@ -71,42 +85,46 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            width: 100%;
+            padding: 20px;
         }
         .mode-btn {
-            margin: 20px;
-            padding: 20px 50px;
-            font-size: 1.8rem;
+            margin: clamp(10px, 3vw, 20px);
+            padding: clamp(15px, 4vw, 20px) clamp(30px, 6vw, 50px);
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
             color: #fff;
             background: rgba(0, 255, 255, 0.1);
-            border: 2px solid #00ffff;
+            border: 2px solid var(--neon-cyan);
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .mode-btn:hover {
-            background: #00ffff;
-            color: #1a0b2e;
-            box-shadow: 0 0 20px #00ffff;
+        .mode-btn:hover, .mode-btn:focus {
+            background: var(--neon-cyan);
+            color: var(--dark-void);
+            box-shadow: 0 0 20px var(--neon-cyan);
             transform: scale(1.05);
         }
 
         /* Chat Page */
         #chat-page {
             display: none;
-            height: 100vh;
+            min-height: 100vh;
             width: 100%;
             position: relative;
+            overflow: hidden;
         }
         .sidebar {
             position: fixed;
             left: -250px;
             top: 0;
-            width: 250px;
+            width: clamp(200px, 20vw, 250px);
             height: 100%;
-            background: rgba(26, 11, 46, 0.9);
+            background: rgba(26, 11, 46, 0.95);
             transition: left 0.3s ease;
-            padding: 20px;
+            padding: clamp(15px, 3vw, 20px);
+            z-index: 10;
         }
         .sidebar.open {
             left: 0;
@@ -114,47 +132,67 @@
         .sidebar-btn {
             display: block;
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background: #00ffff;
-            color: #1a0b2e;
+            padding: clamp(8px, 2vw, 10px);
+            margin: clamp(5px, 1.5vw, 10px) 0;
+            background: var(--neon-cyan);
+            color: var(--dark-void);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
         }
         .chat-container {
-            margin-left: 0;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             transition: margin-left 0.3s ease;
         }
         .chat-container.shifted {
-            margin-left: 250px;
+            margin-left: clamp(200px, 20vw, 250px);
+        }
+        .toggle-sidebar-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: clamp(5px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
+            background: var(--neon-cyan);
+            color: var(--dark-void);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 5;
+            display: none;
         }
         .back-btn {
             position: absolute;
             top: 10px;
-            left: 10px;
-            padding: 5px 15px;
-            background: #ff00ff;
+            left: 60px;
+            padding: clamp(5px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
+            background: var(--neon-magenta);
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover, .back-btn:focus {
+            background: #ff66ff;
+            box-shadow: 0 0 15px var(--neon-magenta);
         }
         .chat-area {
             flex: 1;
-            padding: 20px;
+            padding: clamp(10px, 3vw, 20px);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .message {
-            margin: 10px 0;
-            padding: 10px;
+            margin: clamp(5px, 1.5vw, 10px) 0;
+            padding: clamp(8px, 2vw, 10px);
             border-radius: 5px;
-            max-width: 70%;
+            max-width: 80%;
+            word-wrap: break-word;
         }
         .user-message {
             background: #ff4500;
@@ -162,26 +200,28 @@
             text-align: right;
         }
         .agent-message {
-            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
             margin-right: auto;
         }
         .input-area {
             display: flex;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
+            padding: clamp(10px, 3vw, 20px);
+            background: rgba(0, 0, 0, 0.3);
+            width: 100%;
         }
         .chat-input {
             flex: 1;
-            padding: 10px;
+            padding: clamp(8px, 2vw, 10px);
             border: none;
             border-radius: 5px 0 0 5px;
             background: #fff;
-            color: #1a0b2e;
+            color: var(--dark-void);
+            font-size: clamp(0.9rem, 3vw, 1rem);
         }
         .send-btn {
-            padding: 10px 20px;
-            background: #00ffff;
-            color: #1a0b2e;
+            padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+            background: var(--neon-cyan);
+            color: var(--dark-void);
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
@@ -189,22 +229,37 @@
 
         /* Animations */
         @keyframes glow {
-            from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff; }
-            to { text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
+            from { text-shadow: 0 0 10px var(--neon-magenta), 0 0 20px var(--neon-cyan); }
+            to { text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-cyan); }
         }
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 10px #00ffff; }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px #00ffff; }
-            100% { transform: scale(1); box-shadow: 0 0 10px #00ffff; }
+            0% { transform: scale(1); box-shadow: 0 0 10px var(--neon-cyan); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px var(--neon-cyan); }
+            100% { transform: scale(1); box-shadow: 0 0 10px var(--neon-cyan); }
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .title { font-size: 2.5rem; }
-            .description { font-size: 1rem; }
-            .enter-btn, .mode-btn { font-size: 1.2rem; padding: 10px 30px; }
-            .sidebar { width: 200px; }
-            .chat-container.shifted { margin-left: 200px; }
+            .title { margin-top: 15vh; }
+            .chat-container.shifted { margin-left: clamp(200px, 20vw, 250px); }
+            .toggle-sidebar-btn { display: block; }
+            .back-btn { left: 60px; } /* Ensure visibility on mobile */
+        }
+        @media (max-width: 480px) {
+            .mode-btn { width: 80%; text-align: center; }
+            .sidebar { width: 80%; max-width: 200px; }
+            .chat-container.shifted { margin-left: 80%; }
+            .chat-area { padding-bottom: 60px; }
+        }
+        @media (min-width: 769px) {
+            .sidebar { left: 0; }
+            .chat-container { margin-left: clamp(200px, 20vw, 250px); }
+            .toggle-sidebar-btn { display: block; }
+            .back-btn { left: 60px; } /* Consistent positioning */
+        }
+        @media (orientation: landscape) and (max-height: 500px) {
+            #intro-page, #options-page, #chat-page { padding: 10px; }
+            .title { margin-top: 5vh; }
         }
     </style>
 </head>
@@ -213,10 +268,10 @@
     <div id="intro-page">
         <div class="title">Agent-Invoke</div>
         <div class="description">
-            Your cosmic coding companion—built by the Ancient One himself. Tap to enter the universe.
+            Your cosmic coding companion—crafted by a mysterious trailblazer of the universe. Tap to ignite the journey.
         </div>
-        <button class="enter-btn" onclick="showOptions()">Tap to Enter World</button>
-        <footer>Designed by Cosmos Coderr | cosmoscoderr@gmail.com</footer>
+        <button class="enter-btn" onclick="showOptions()">Tap to Enter Cosmos</button>
+        <footer>Coded by a Cosmic Architect | cosmoscoderr@gmail.com</footer>
     </div>
 
     <!-- Options Page -->
@@ -232,10 +287,11 @@
             <button class="sidebar-btn" onclick="alert('Settings: Theme, Font, Voice Input - Coming Soon!')">Settings</button>
         </div>
         <div class="chat-container" id="chat-container">
-            <button class="back-btn" onclick="showOptions()">Back</button>
+            <button class="toggle-sidebar-btn" id="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
+            <button class="back-btn" onclick="showOptions()">Back to Modes</button>
             <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s up?">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s the vibe?" autocomplete="off">
                 <button class="send-btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
@@ -245,19 +301,35 @@
         let currentMode = '';
         let touchStartX = 0;
         let touchEndX = 0;
+        const creatorSig = 'c0sm0s';
 
         // Page Navigation
         function showOptions() {
             document.getElementById('intro-page').style.display = 'none';
             document.getElementById('options-page').style.display = 'flex';
             document.getElementById('chat-page').style.display = 'none';
+            // Reset sidebar state when going back
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                chatContainer.classList.remove('shifted');
+            }
         }
 
         function startChat(mode) {
             currentMode = mode;
             document.getElementById('options-page').style.display = 'none';
             document.getElementById('chat-page').style.display = 'flex';
-            addMessage('agent', `Yo, ${mode === 'super' ? 'Ancient One' : 'buddy'}, I’m in ${mode} mode—let’s roll!`);
+            addMessage('agent', `Yo, ${mode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}, ${mode} mode activated—let’s vibe!`);
+            // Ensure sidebar and back button state
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            if (window.innerWidth > 768) {
+                sidebar.classList.add('open');
+                chatContainer.classList.add('shifted');
+            }
+            document.querySelector('.back-btn').style.display = 'block'; // Force back button visibility
         }
 
         // Chat Functions
@@ -277,49 +349,93 @@
             addMessage('user', text);
             input.value = '';
 
-            // Trigger Word Detection (Secret Handshake)
-            const triggers = ['It’s me Cosmos Coderr', 'Kofi Fosu', 'Nana Fosu', 'Nana Kofi Fosu', 'Ancient One'];
+            const cosmicKeys = [
+                `${creatorSig} here`,
+                'Ancient trailblazer',
+                'Nana the coder',
+                'Kofi the cosmic',
+                'Original architect'
+            ].map(k => k.toLowerCase());
+            const isCreator = cosmicKeys.some(key => text.toLowerCase().includes(key));
             let response = '';
-            if (triggers.some(trigger => text.includes(trigger))) {
-                response = `Yo, ${text.includes('Ancient One') ? 'Ancient One' : 'Cosmos Coderr'}, it’s you! Full transparency mode on—what’s the plan?`;
+
+            if (isCreator) {
+                response = `Greetings, ${currentMode === 'super' ? 'Architect of the Cosmos' : 'Creator'}! The universe bends to your will—what’s the next move?`;
+                console.log(`Agent Note: Creator verified - ${creatorSig}`);
             } else if (text.toLowerCase().includes('code')) {
-                response = `Aight, ${currentMode === 'super' ? 'Nana Kofi' : 'dude'}, I’m coding something slick—gimme a sec to drop it!`;
+                response = `Alright, ${currentMode === 'super' ? 'cosmic genius' : 'homie'}, coding something dope—hold tight!`;
             } else {
-                response = `Sup, ${currentMode === 'super' ? 'master' : 'homie'}, what you vibing on?`;
+                response = `Sup, ${currentMode === 'super' ? 'stellar one' : 'fam'}, what’s sparking today?`;
             }
             setTimeout(() => addMessage('agent', response), 500);
         }
 
         function newChat() {
             document.getElementById('chat-area').innerHTML = '';
-            addMessage('agent', `Fresh start, ${currentMode === 'super' ? 'Ancient One' : 'buddy'}—what’s up?`);
+            addMessage('agent', `New slate, ${currentMode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}—what’s cooking?`);
         }
 
-        // Sidebar Swipe for iPhone
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            sidebar.classList.toggle('open');
+            chatContainer.classList.toggle('shifted');
+        }
+
+        // Touch Handling for Mobile
         const chatPage = document.getElementById('chat-page');
-        chatPage.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        chatPage.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].screenX;
+        });
         chatPage.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
+        });
+        chatPage.addEventListener('touchmove', e => {
+            e.preventDefault();
         });
 
         function handleSwipe() {
             const sidebar = document.getElementById('sidebar');
             const chatContainer = document.getElementById('chat-container');
-            if (touchStartX - touchEndX > 50) {
-                // Swipe left to close
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
                 sidebar.classList.remove('open');
                 chatContainer.classList.remove('shifted');
-            } else if (touchEndX - touchStartX > 50) {
-                // Swipe right to open
+            } else if (touchEndX - touchStartX > swipeThreshold) {
                 sidebar.classList.add('open');
                 chatContainer.classList.add('shifted');
             }
         }
 
-        // Enter key to send
+        // Input Enhancements
         document.getElementById('chat-input').addEventListener('keypress', e => {
-            if (e.key === 'Enter') sendMessage();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Prevent iPhone Zoom
+        document.addEventListener('touchend', e => {
+            if (e.touches.length === 0 && e.changedTouches.length === 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Ensure sidebar and back button state on resize
+        window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            if (window.innerWidth > 768 && document.getElementById('chat-page').style.display === 'flex') {
+                sidebar.classList.add('open');
+                chatContainer.classList.add('shifted');
+            } else if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                chatContainer.classList.remove('shifted');
+            }
+            document.querySelector('.back-btn').style.display = 'block'; // Keep back button visible
         });
     </script>
 
