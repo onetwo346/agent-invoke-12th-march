@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Agent-Invoke</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-cyan: #00ffff;
@@ -32,7 +33,9 @@
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
-            touch-action: manipulation;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         /* Intro Page */
@@ -41,23 +44,28 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             width: 100%;
             padding: clamp(15px, 5vw, 30px);
         }
+        
         .title {
             color: var(--neon-magenta);
             font-size: clamp(2rem, 8vw, 4rem);
             text-shadow: 0 0 15px var(--neon-magenta), 0 0 30px var(--neon-cyan);
             animation: glow 2s infinite alternate;
-            margin-top: 20vh;
+            margin-top: 10vh;
+            text-align: center;
         }
+        
         .description {
             font-size: clamp(0.9rem, 3vw, 1.2rem);
             max-width: 600px;
             text-align: center;
             opacity: 0.9;
+            margin: 5vh 0;
         }
+        
         .enter-btn {
             padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 40px);
             font-size: clamp(1rem, 4vw, 1.5rem);
@@ -69,16 +77,20 @@
             animation: pulse 1.5s infinite;
             transition: all 0.3s ease;
             touch-action: manipulation;
+            margin-bottom: 5vh;
         }
+        
         .enter-btn:active {
             background: var(--neon-cyan);
             color: var(--dark-void);
             box-shadow: 0 0 20px var(--neon-cyan);
         }
+        
         footer {
             font-size: clamp(0.7rem, 2vw, 0.9rem);
             opacity: 0.7;
             padding-bottom: clamp(10px, 3vw, 20px);
+            text-align: center;
         }
 
         /* Options Page */
@@ -87,10 +99,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
             width: 100%;
             padding: clamp(15px, 5vw, 30px);
         }
+        
         .mode-btn {
             margin: clamp(10px, 2vw, 20px);
             padding: clamp(12px, 3vw, 18px) clamp(25px, 5vw, 40px);
@@ -102,7 +115,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             touch-action: manipulation;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
         }
+        
         .mode-btn:active {
             background: var(--neon-cyan);
             color: var(--dark-void);
@@ -113,130 +130,161 @@
         /* Chat Page */
         #chat-page {
             display: none;
-            min-height: 100vh;
+            height: 100vh;
             width: 100%;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             overflow: hidden;
         }
+        
         .sidebar {
             position: fixed;
             left: -250px;
             top: 0;
-            width: clamp(180px, 20vw, 250px);
+            width: 250px;
             height: 100%;
             background: rgba(26, 11, 46, 0.95);
             transition: left 0.3s ease;
-            padding: clamp(10px, 2vw, 20px);
+            padding: 20px;
             z-index: 10;
+            overflow-y: auto;
         }
+        
         .sidebar.open {
             left: 0;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
+        
         .sidebar-btn {
             display: block;
             width: 100%;
-            padding: clamp(8px, 2vw, 12px);
-            margin: clamp(5px, 1vw, 10px) 0;
+            padding: 12px;
+            margin: 10px 0;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            font-size: 1rem;
             transition: all 0.2s ease;
             touch-action: manipulation;
         }
+        
         .sidebar-btn:active {
             background: var(--neon-magenta);
             transform: scale(0.98);
         }
+        
         .chat-container {
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             transition: margin-left 0.3s ease;
             max-width: var(--chat-max-width);
             margin: 0 auto;
+            position: relative;
         }
-        .chat-container.shifted {
-            margin-left: clamp(180px, 20vw, 250px);
-        }
+        
         .header-bar {
             display: flex;
             align-items: center;
-            padding: clamp(10px, 2vw, 15px);
-            background: rgba(0, 0, 0, 0.2);
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 5;
         }
+        
         .toggle-sidebar-btn, .back-btn {
-            padding: clamp(6px, 1.5vw, 10px) clamp(12px, 2.5vw, 18px);
+            padding: 8px 15px;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: clamp(0.8rem, 2vw, 1rem);
+            font-size: 1rem;
             transition: all 0.2s ease;
             touch-action: manipulation;
         }
+        
         .back-btn {
             background: var(--neon-magenta);
-            margin-left: 10px;
         }
+        
         .toggle-sidebar-btn:active, .back-btn:active {
             transform: scale(0.95);
         }
+        
         .chat-area {
             flex: 1;
-            padding: clamp(15px, 3vw, 25px);
+            padding: 15px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 2vw, 15px);
+            gap: 15px;
+            position: absolute;
+            top: 50px;
+            bottom: 60px;
+            left: 0;
+            right: 0;
         }
+        
         .message {
-            padding: clamp(8px, 2vw, 12px);
+            padding: 10px 15px;
             border-radius: 8px;
             max-width: 75%;
             word-wrap: break-word;
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-size: 1rem;
             line-height: 1.4;
         }
+        
         .user-message {
             background: #ff4500;
             align-self: flex-end;
+            color: white;
         }
+        
         .agent-message {
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
             align-self: flex-start;
+            color: black;
         }
+        
         .input-area {
             display: flex;
-            padding: clamp(10px, 2vw, 15px);
+            padding: 10px;
             background: rgba(0, 0, 0, 0.3);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
         }
+        
         .chat-input {
             flex: 1;
-            padding: clamp(8px, 2vw, 12px);
+            padding: 10px 15px;
             border: none;
             border-radius: 5px 0 0 5px;
             background: #fff;
             color: var(--dark-void);
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-size: 1rem;
             outline: none;
         }
+        
         .send-btn {
-            padding: clamp(8px, 2vw, 12px) clamp(15px, 3vw, 20px);
+            padding: 10px 20px;
             background: var(--neon-cyan);
             color: var(--dark-void);
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-size: 1rem;
             transition: all 0.2s ease;
-            touch-action: manipulation;
         }
+        
         .send-btn:active {
             background: var(--neon-magenta);
         }
@@ -246,6 +294,7 @@
             from { text-shadow: 0 0 10px var(--neon-magenta), 0 0 20px var(--neon-cyan); }
             to { text-shadow: 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-cyan); }
         }
+        
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 5px var(--neon-cyan); }
             50% { transform: scale(1.03); box-shadow: 0 0 15px var(--neon-cyan); }
@@ -254,24 +303,21 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .title { margin-top: 15vh; }
-            .sidebar { width: clamp(150px, 60vw, 200px); }
-            .chat-container.shifted { margin-left: clamp(150px, 60vw, 200px); }
-            .chat-container { max-width: 100%; padding: 0 10px; }
+            .title { margin-top: 10vh; }
+            .sidebar { width: 80%; max-width: 300px; }
+            .chat-container { max-width: 100%; }
         }
+        
         @media (max-width: 480px) {
             .mode-btn { width: 85%; }
-            .chat-area { padding-bottom: 70px; }
-            .header-bar { justify-content: space-between; }
+            .chat-area { padding: 10px; }
+            .message { max-width: 85%; }
         }
-        @media (min-width: 769px) {
-            .sidebar { left: 0; }
-            .chat-container { margin-left: clamp(180px, 20vw, 250px); }
-        }
+        
         @media (orientation: landscape) and (max-height: 500px) {
-            #intro-page, #options-page { padding: 15px; }
             .title { margin-top: 5vh; }
-            .chat-area { max-height: 60vh; }
+            .description { margin: 2vh 0; }
+            .enter-btn { margin-bottom: 2vh; }
         }
     </style>
 </head>
@@ -282,143 +328,162 @@
         <div class="description">
             Your cosmic coding companion—crafted by a mysterious trailblazer of the universe. Tap to ignite the journey.
         </div>
-        <button class="enter-btn" onclick="showOptions()">Tap to Enter Cosmos</button>
+        <button class="enter-btn" id="enter-btn">Tap to Enter Cosmos</button>
         <footer>Coded by a Cosmic Architect | cosmoscoderr@gmail.com</footer>
     </div>
 
     <!-- Options Page -->
     <div id="options-page">
-        <button class="mode-btn" onclick="startChat('regular')">Regular Mode</button>
-        <button class="mode-btn" onclick="startChat('super')">Super Mode</button>
+        <button class="mode-btn" id="regular-mode-btn">Regular Mode</button>
+        <button class="mode-btn" id="super-mode-btn">Super Mode</button>
     </div>
 
     <!-- Chat Page -->
     <div id="chat-page">
         <div class="sidebar" id="sidebar">
-            <button class="sidebar-btn" onclick="newChat()">New Chat</button>
-            <button class="sidebar-btn" onclick="alert('Settings: Theme, Font, Voice Input - Coming Soon!')">Settings</button>
+            <button class="sidebar-btn" id="new-chat-btn">New Chat</button>
+            <button class="sidebar-btn" id="settings-btn">Settings</button>
         </div>
         <div class="chat-container" id="chat-container">
             <div class="header-bar">
-                <button class="toggle-sidebar-btn" id="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
-                <button class="back-btn" onclick="showOptions()">Back</button>
+                <button class="toggle-sidebar-btn" id="toggle-sidebar-btn">☰</button>
+                <button class="back-btn" id="back-btn">Back</button>
             </div>
             <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s the vibe?" autocomplete="off">
-                <button class="send-btn" onclick="sendMessage()">Send</button>
+                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what's the vibe?" autocomplete="off">
+                <button class="send-btn" id="send-btn">Send</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Global variables
         let currentMode = '';
+        
+        // DOM Elements
+        const introPage = document.getElementById('intro-page');
+        const optionsPage = document.getElementById('options-page');
+        const chatPage = document.getElementById('chat-page');
+        const sidebar = document.getElementById('sidebar');
+        const chatContainer = document.getElementById('chat-container');
+        const chatArea = document.getElementById('chat-area');
+        const chatInput = document.getElementById('chat-input');
+        
+        // Event Listeners
+        document.getElementById('enter-btn').addEventListener('click', showOptions);
+        document.getElementById('regular-mode-btn').addEventListener('click', () => startChat('regular'));
+        document.getElementById('super-mode-btn').addEventListener('click', () => startChat('super'));
+        document.getElementById('new-chat-btn').addEventListener('click', newChat);
+        document.getElementById('settings-btn').addEventListener('click', () => alert('Settings: Theme, Font, Voice Input - Coming Soon!'));
+        document.getElementById('toggle-sidebar-btn').addEventListener('click', toggleSidebar);
+        document.getElementById('back-btn').addEventListener('click', showOptions);
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        
+        // Handle Enter key for sending messages
+        chatInput.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Touch swipe handlers
         let touchStartX = 0;
         let touchEndX = 0;
-        const creatorSig = 'c0sm0s';
-
-        // Page Navigation
+        
+        chatPage.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        chatPage.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].clientX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 70;
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0 && !sidebar.classList.contains('open')) {
+                    // Right swipe - open sidebar
+                    sidebar.classList.add('open');
+                } else if (swipeDistance < 0 && sidebar.classList.contains('open')) {
+                    // Left swipe - close sidebar
+                    sidebar.classList.remove('open');
+                }
+            }
+        }
+        
+        // Page Navigation Functions
         function showOptions() {
-            document.getElementById('intro-page').style.display = 'none'; // Explicitly hide intro page
-            document.getElementById('options-page').style.display = 'flex';
-            document.getElementById('chat-page').style.display = 'none';
+            introPage.style.display = 'none';
+            optionsPage.style.display = 'flex';
+            chatPage.style.display = 'none';
             resetSidebar();
         }
-
+        
         function startChat(mode) {
             currentMode = mode;
-            document.getElementById('intro-page').style.display = 'none';
-            document.getElementById('options-page').style.display = 'none';
-            document.getElementById('chat-page').style.display = 'flex';
-            addMessage('agent', `Yo, ${mode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}, ${mode} mode activated—let’s vibe!`);
-            adjustSidebarForScreen();
+            introPage.style.display = 'none';
+            optionsPage.style.display = 'none';
+            chatPage.style.display = 'block';
+            
+            // Clear previous messages
+            chatArea.innerHTML = '';
+            
+            // Add welcome message
+            addMessage('agent', `Yo, ${mode === 'super' ? 'buddy, regular mode' : 'buddy, regular mode'} activated—let's vibe!`);
+            
+            // Focus on input
+            setTimeout(() => chatInput.focus(), 300);
         }
-
+        
         // Chat Functions
         function addMessage(sender, text) {
-            const chatArea = document.getElementById('chat-area');
             const message = document.createElement('div');
             message.classList.add('message', sender === 'user' ? 'user-message' : 'agent-message');
             message.textContent = text;
             chatArea.appendChild(message);
             chatArea.scrollTop = chatArea.scrollHeight;
         }
-
+        
         function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
+            const text = chatInput.value.trim();
             if (!text) return;
+            
             addMessage('user', text);
-            input.value = '';
-            let response = currentMode === 'super' 
-                ? `Sup, stellar one, processing your cosmic query...` 
-                : `Yo, fam, got your vibe—here’s the response:`;
-            setTimeout(() => addMessage('agent', response), 300);
+            chatInput.value = '';
+            
+            // Simulate response
+            setTimeout(() => {
+                const response = `Yo, fam, got your vibe—here's the response:`;
+                addMessage('agent', response);
+            }, 500);
         }
-
+        
         function newChat() {
-            document.getElementById('chat-area').innerHTML = '';
-            addMessage('agent', `Fresh start, ${currentMode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}—what’s up?`);
+            chatArea.innerHTML = '';
+            addMessage('agent', `Fresh start, buddy—what's up?`);
+            toggleSidebar(); // Close sidebar on mobile after action
         }
-
-        // Sidebar Handling
+        
+        // Sidebar Functions
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
             sidebar.classList.toggle('open');
-            chatContainer.classList.toggle('shifted');
         }
-
+        
         function resetSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
             sidebar.classList.remove('open');
-            chatContainer.classList.remove('shifted');
         }
-
-        function adjustSidebarForScreen() {
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
-            if (window.innerWidth > 768) {
-                sidebar.classList.add('open');
-                chatContainer.classList.add('shifted');
-            } else {
-                sidebar.classList.remove('open');
-                chatContainer.classList.remove('shifted');
-            }
-        }
-
-        // Touch Handling
-        const chatPage = document.getElementById('chat-page');
-        chatPage.addEventListener('touchstart', e => touchStartX = e.touches[0].screenX, { passive: true });
-        chatPage.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-        chatPage.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) toggleSidebar();
-            if (touchEndX - touchStartX > swipeThreshold) toggleSidebar();
-        }
-
-        // Input Enhancements
-        document.getElementById('chat-input').addEventListener('keypress', e => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        // Resize Handler
-        window.addEventListener('resize', adjustSidebarForScreen);
-
-        // Initial Setup
-        document.getElementById('intro-page').style.display = 'flex';
-        document.getElementById('options-page').style.display = 'none';
-        document.getElementById('chat-page').style.display = 'none';
+        
+        // Initialize app
+        window.onload = function() {
+            introPage.style.display = 'flex';
+            optionsPage.style.display = 'none';
+            chatPage.style.display = 'none';
+        };
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </body>
 </html>
