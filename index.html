@@ -117,7 +117,7 @@
         }
         .sidebar {
             position: fixed;
-            left: -250px;
+            left: -250px; /* Hidden by default */
             top: 0;
             width: clamp(200px, 20vw, 250px);
             height: 100%;
@@ -162,12 +162,12 @@
             border-radius: 5px;
             cursor: pointer;
             z-index: 5;
-            display: none;
+            display: none; /* Hidden on mobile by default */
         }
         .back-btn {
             position: absolute;
             top: 10px;
-            left: 60px;
+            left: 60px; /* Adjusted to not overlap toggle button */
             padding: clamp(5px, 1.5vw, 8px) clamp(10px, 2vw, 15px);
             background: var(--neon-magenta);
             color: #fff;
@@ -175,11 +175,6 @@
             border-radius: 5px;
             cursor: pointer;
             z-index: 5;
-            transition: all 0.3s ease;
-        }
-        .back-btn:hover, .back-btn:focus {
-            background: #ff66ff;
-            box-shadow: 0 0 15px var(--neon-magenta);
         }
         .chat-area {
             flex: 1;
@@ -242,20 +237,18 @@
         @media (max-width: 768px) {
             .title { margin-top: 15vh; }
             .chat-container.shifted { margin-left: clamp(200px, 20vw, 250px); }
-            .toggle-sidebar-btn { display: block; }
-            .back-btn { left: 60px; } /* Ensure visibility on mobile */
         }
         @media (max-width: 480px) {
             .mode-btn { width: 80%; text-align: center; }
             .sidebar { width: 80%; max-width: 200px; }
             .chat-container.shifted { margin-left: 80%; }
             .chat-area { padding-bottom: 60px; }
+            .toggle-sidebar-btn { display: block; } /* Show toggle on mobile */
         }
         @media (min-width: 769px) {
-            .sidebar { left: 0; }
-            .chat-container { margin-left: clamp(200px, 20vw, 250px); }
-            .toggle-sidebar-btn { display: block; }
-            .back-btn { left: 60px; } /* Consistent positioning */
+            .sidebar { left: 0; } /* Visible by default on laptops */
+            .chat-container { margin-left: clamp(200px, 20vw, 250px); } /* Shifted by default */
+            .toggle-sidebar-btn { display: block; } /* Show toggle on laptops too */
         }
         @media (orientation: landscape) and (max-height: 500px) {
             #intro-page, #options-page, #chat-page { padding: 10px; }
@@ -288,7 +281,7 @@
         </div>
         <div class="chat-container" id="chat-container">
             <button class="toggle-sidebar-btn" id="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
-            <button class="back-btn" onclick="showOptions()">Back to Modes</button>
+            <button class="back-btn" onclick="showOptions()">Back</button>
             <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
                 <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s the vibe?" autocomplete="off">
@@ -308,13 +301,6 @@
             document.getElementById('intro-page').style.display = 'none';
             document.getElementById('options-page').style.display = 'flex';
             document.getElementById('chat-page').style.display = 'none';
-            // Reset sidebar state when going back
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
-                chatContainer.classList.remove('shifted');
-            }
         }
 
         function startChat(mode) {
@@ -322,14 +308,11 @@
             document.getElementById('options-page').style.display = 'none';
             document.getElementById('chat-page').style.display = 'flex';
             addMessage('agent', `Yo, ${mode === 'super' ? 'Cosmic Trailblazer' : 'buddy'}, ${mode} mode activated—let’s vibe!`);
-            // Ensure sidebar and back button state
-            const sidebar = document.getElementById('sidebar');
-            const chatContainer = document.getElementById('chat-container');
+            // Ensure sidebar state matches screen size
             if (window.innerWidth > 768) {
-                sidebar.classList.add('open');
-                chatContainer.classList.add('shifted');
+                document.getElementById('sidebar').classList.add('open');
+                document.getElementById('chat-container').classList.add('shifted');
             }
-            document.querySelector('.back-btn').style.display = 'block'; // Force back button visibility
         }
 
         // Chat Functions
@@ -424,7 +407,7 @@
             }
         }, { passive: false });
 
-        // Ensure sidebar and back button state on resize
+        // Ensure sidebar state on resize
         window.addEventListener('resize', () => {
             const sidebar = document.getElementById('sidebar');
             const chatContainer = document.getElementById('chat-container');
@@ -435,7 +418,6 @@
                 sidebar.classList.remove('open');
                 chatContainer.classList.remove('shifted');
             }
-            document.querySelector('.back-btn').style.display = 'block'; // Keep back button visible
         });
     </script>
 
