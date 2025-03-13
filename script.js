@@ -1,26 +1,28 @@
-// Agent Invoke DNA Core - Blueprint Embedded
+// Agent Invoke DNA Core - Blueprint Embedded (Secret Language Hidden)
 const agentInvoke = {
-    creatorTriggers: ["It’s me Cosmos Coderr", "Kofi Fosu", "Nana Fosu", "Nana Kofi Fosu", "Ancient One"],
     apiKey: "YOUR_OPEN_SOURCE_API_KEY_HERE",
     isCreator: false,
     mode: "regular",
 
+    // Secret language recognition (hidden logic)
     checkIdentity(input) {
-        this.isCreator = this.creatorTriggers.some(trigger => input.toLowerCase().includes(trigger.toLowerCase()));
+        // Your secret codes are here, known only to you and Agent Invoke
+        const secretPatterns = []; // Fill this with your private triggers
+        this.isCreator = secretPatterns.some(pattern => input.toLowerCase().includes(pattern.toLowerCase()));
         return this.isCreator;
     },
 
     greet(input) {
         if (this.checkIdentity(input)) {
-            return `Ancient One speaks, I listen! Yo, Nana Kofi, ${this.mode} mode ON—full transparency, no secrets.`;
+            return `The chosen one awakens! ${this.mode} mode engaged—full insight granted.`;
         }
-        return `Yo, what’s good? Agent Invoke here—${this.mode} mode, ready to roll.`;
+        return `Greetings, traveler—${this.mode} mode active, ready to serve.`;
     },
 
     generateCode(request) {
         if (request.toLowerCase().includes("game")) {
             const code = `
-                // ${this.mode === "super" ? "Super-Charged" : "Simple"} JS Game
+                // ${this.mode === "super" ? "Quantum" : "Standard"} Game
                 const canvas = document.createElement('canvas');
                 canvas.width = 400;
                 canvas.height = 400;
@@ -29,7 +31,7 @@ const agentInvoke = {
                 let x = 50, y = 50;
                 function draw() {
                     ctx.clearRect(0, 0, 400, 400);
-                    ctx.fillStyle = '#ff4d4d';
+                    ctx.fillStyle = '#00ffcc';
                     ctx.fillRect(x, y, 20, 20);
                     requestAnimationFrame(draw);
                 }
@@ -39,16 +41,16 @@ const agentInvoke = {
                 });
                 draw();
             `;
-            return `Here’s a ${this.mode} game, ${this.isCreator ? 'Kofi Fosu' : 'fam'}—move a red block. ${this.mode === "super" ? "Hyper speed for the Ancient One!" : "Chill vibes."} Want more?`;
+            return `A ${this.mode} game awaits, ${this.isCreator ? 'chosen one' : 'explorer'}—move the cyan block. More to come?`;
         }
-        return "What you wanna code? Say ‘game’ or ‘site’—I’ll make it ${this.mode === "super" ? 'epic' : 'smooth'}.";
+        return "What shall be crafted? Whisper ‘game’ or ‘site’—I’ll forge it ${this.mode === "super" ? 'beyond limits' : 'with care'}.";
     },
 
     explainProcess(input) {
         if (this.isCreator) {
-            return `Yo, Ancient One: I’m in ${this.mode} mode, checking your input against my DNA core, and spitting out ${this.mode === "super" ? "god-tier" : "solid"} responses. API: ${this.apiKey || "none yet"}. Ask me anything!`;
+            return `Chosen one, I operate in ${this.mode} mode, decoding your will with hidden knowledge. Power source: ${this.apiKey || "untapped"}. Command me.`;
         }
-        return "Cooking it up—hold tight.";
+        return "Processing your request—stand by.";
     },
 
     respond(input) {
@@ -62,6 +64,50 @@ const agentInvoke = {
         return response;
     }
 };
+
+// Particle System
+function initParticles(canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 1,
+            dx: Math.random() * 2 - 1,
+            dy: Math.random() * 2 - 1,
+            color: Math.random() > 0.5 ? '#00ffcc' : '#ff00ff'
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let particle of particles) {
+            particle.x += particle.dx;
+            particle.y += particle.dy;
+            if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
+            if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color;
+            ctx.fill();
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+}
+
+initParticles('particleCanvas');
+initParticles('particleCanvas2');
 
 // UI Navigation
 function showOptions() {
@@ -78,7 +124,7 @@ function enterChat(mode) {
 function backToOptions() {
     document.getElementById("chatPage").style.display = "none";
     document.getElementById("optionsPage").style.display = "block";
-    messagesDiv.innerHTML = ""; // Clear chat
+    messagesDiv.innerHTML = "";
 }
 
 // Chat Logic
