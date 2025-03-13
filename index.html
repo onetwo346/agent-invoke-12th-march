@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>agent-invoke</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <title>Agent-Invoke</title>
     <style>
         * {
             margin: 0;
@@ -14,361 +13,316 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: #e0e0e0;
             height: 100vh;
             overflow: hidden;
+            background: linear-gradient(135deg, #1a0b2e, #3b1a5a);
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .page {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .page.active {
-            display: flex;
-            opacity: 1;
-        }
-
         /* Intro Page */
-        .intro-content {
+        #intro-page {
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
             padding: 20px;
-            animation: fadeIn 1.5s ease;
         }
-
         .title {
+            color: #ff00ff;
             font-size: 4rem;
-            text-transform: uppercase;
-            color: #00d4ff;
-            text-shadow: 0 0 20px #00d4ff;
-            word-break: break-word;
+            text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+            animation: glow 2s infinite alternate;
+            margin-top: 20vh;
         }
-
         .description {
             font-size: 1.2rem;
-            margin: 20px 0;
-            color: #b0c4de;
-            max-width: 80%;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 600px;
+            opacity: 0.9;
         }
-
-        .pulse-btn {
-            padding: 15px 30px;
+        .enter-btn {
+            padding: 15px 40px;
             font-size: 1.5rem;
+            color: #fff;
             background: none;
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
+            border: 2px solid #00ffff;
             border-radius: 50px;
             cursor: pointer;
             animation: pulse 1.5s infinite;
+            transition: all 0.3s ease;
         }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(0, 212, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+        .enter-btn:hover {
+            background: #00ffff;
+            color: #1a0b2e;
+            box-shadow: 0 0 30px #00ffff;
         }
-
         footer {
-            position: absolute;
-            bottom: 20px;
             font-size: 0.9rem;
-            color: #b0c4de;
-            text-align: center;
-            width: 100%;
-        }
-
-        footer a {
-            color: #00d4ff;
-            text-decoration: none;
+            opacity: 0.7;
+            padding-bottom: 20px;
         }
 
         /* Options Page */
-        .options-title {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-top: 20%;
-            color: #00d4ff;
-        }
-
-        .mode-buttons {
-            display: flex;
+        #options-page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
+            height: 100vh;
         }
-
         .mode-btn {
-            padding: 20px 40px;
-            font-size: 1.2rem;
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            border-radius: 10px;
+            margin: 20px;
+            padding: 20px 50px;
+            font-size: 1.8rem;
+            color: #fff;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
         }
-
         .mode-btn:hover {
-            transform: scale(1.1);
+            background: #00ffff;
+            color: #1a0b2e;
+            box-shadow: 0 0 20px #00ffff;
+            transform: scale(1.05);
         }
 
         /* Chat Page */
-        .chat-container {
+        #chat-page {
+            display: none;
+            height: 100vh;
             width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
+            position: relative;
         }
-
         .sidebar {
             position: fixed;
             left: -250px;
             top: 0;
             width: 250px;
             height: 100%;
-            background: rgba(22, 33, 62, 0.9);
-            padding: 20px;
+            background: rgba(26, 11, 46, 0.9);
             transition: left 0.3s ease;
-            z-index: 10;
+            padding: 20px;
         }
-
-        .sidebar.active {
+        .sidebar.open {
             left: 0;
         }
-
         .sidebar-btn {
             display: block;
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            background: #00d4ff;
+            background: #00ffff;
+            color: #1a0b2e;
             border: none;
-            color: #1a1a2e;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1rem;
         }
-
-        .settings-panel {
-            display: none;
-            margin-top: 20px;
-            color: #e0e0e0;
-        }
-
-        .back-btn {
-            align-self: flex-start;
-            padding: 10px 20px;
-            background: #ff4d4d;
-            border: none;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            margin: 10px 0;
-            word-wrap: break-word;
-            max-width: 100%;
-        }
-
-        .input-area {
+        .chat-container {
+            margin-left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
         }
-
-        #chat-input {
-            flex-grow: 1;
+        .chat-container.shifted {
+            margin-left: 250px;
+        }
+        .back-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 15px;
+            background: #ff00ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 10px 0;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid #00d4ff;
-            color: #e0e0e0;
             border-radius: 5px;
             max-width: 70%;
         }
-
-        #send-btn {
-            padding: 10px 20px;
-            background: #00d4ff;
+        .user-message {
+            background: #ff4500;
+            margin-left: auto;
+            text-align: right;
+        }
+        .agent-message {
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            margin-right: auto;
+        }
+        .input-area {
+            display: flex;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
             border: none;
-            color: #1a1a2e;
-            border-radius: 5px;
+            border-radius: 5px 0 0 5px;
+            background: #fff;
+            color: #1a0b2e;
+        }
+        .send-btn {
+            padding: 10px 20px;
+            background: #00ffff;
+            color: #1a0b2e;
+            border: none;
+            border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Animations */
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px #00ffff; }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px #00ffff; }
+            100% { transform: scale(1); box-shadow: 0 0 10px #00ffff; }
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .title { font-size: 2.5rem; }
-            .pulse-btn { font-size: 1.2rem; }
-            .mode-btn { padding: 15px 30px; }
-            .chat-box { font-size: 0.9rem; }
-            #chat-input { max-width: 60%; }
+            .description { font-size: 1rem; }
+            .enter-btn, .mode-btn { font-size: 1.2rem; padding: 10px 30px; }
+            .sidebar { width: 200px; }
+            .chat-container.shifted { margin-left: 200px; }
         }
     </style>
 </head>
 <body>
     <!-- Intro Page -->
-    <div id="intro-page" class="page active">
-        <div class="intro-content">
-            <h1 class="title">agent-invoke</h1>
-            <p class="description">Your cosmic coding companion—built to craft flawless code and vibe with you like a friend.</p>
-            <button id="enter-btn" class="pulse-btn">Tap to Enter World</button>
+    <div id="intro-page">
+        <div class="title">Agent-Invoke</div>
+        <div class="description">
+            Your cosmic coding companion—built by the Ancient One himself. Tap to enter the universe.
         </div>
-        <footer>
-            <p>Designed by Cosmos Coderr | <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a></p>
-        </footer>
+        <button class="enter-btn" onclick="showOptions()">Tap to Enter World</button>
+        <footer>Designed by Cosmos Coderr | cosmoscoderr@gmail.com</footer>
     </div>
 
     <!-- Options Page -->
-    <div id="options-page" class="page">
-        <h2 class="options-title">Choose Your Mode</h2>
-        <div class="mode-buttons">
-            <button id="regular-mode" class="mode-btn">Regular Mode</button>
-            <button id="super-mode" class="mode-btn">Super Mode</button>
-        </div>
+    <div id="options-page">
+        <button class="mode-btn" onclick="startChat('regular')">Regular Mode</button>
+        <button class="mode-btn" onclick="startChat('super')">Super Mode</button>
     </div>
 
     <!-- Chat Page -->
-    <div id="chat-page" class="page">
+    <div id="chat-page">
         <div class="sidebar" id="sidebar">
-            <button id="new-chat" class="sidebar-btn">New Chat</button>
-            <button id="settings-btn" class="sidebar-btn">Settings</button>
-            <div id="settings-panel" class="settings-panel">
-                <p>Theme: <select><option>Dark</option><option>Light</option></select></p>
-                <p>Font Size: <input type="range" min="12" max="20" value="16"></p>
-                <p>Voice Input: <input type="checkbox"></p>
-            </div>
+            <button class="sidebar-btn" onclick="newChat()">New Chat</button>
+            <button class="sidebar-btn" onclick="alert('Settings: Theme, Font, Voice Input - Coming Soon!')">Settings</button>
         </div>
-        <div class="chat-container">
-            <button id="back-btn" class="back-btn">Back</button>
-            <div id="chat-box" class="chat-box"></div>
+        <div class="chat-container" id="chat-container">
+            <button class="back-btn" onclick="showOptions()">Back</button>
+            <div class="chat-area" id="chat-area"></div>
             <div class="input-area">
-                <input type="text" id="chat-input" placeholder="Talk to Agent Invoke...">
-                <button id="send-btn">Send</button>
+                <input type="text" class="chat-input" id="chat-input" placeholder="Yo, what’s up?">
+                <button class="send-btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Page Navigation
-        const introPage = document.getElementById('intro-page');
-        const optionsPage = document.getElementById('options-page');
-        const chatPage = document.getElementById('chat-page');
-        const enterBtn = document.getElementById('enter-btn');
-        const regularMode = document.getElementById('regular-mode');
-        const superMode = document.getElementById('super-mode');
-        const backBtn = document.getElementById('back-btn');
-
-        function showPage(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            page.classList.add('active');
-        }
-
-        enterBtn.addEventListener('click', () => showPage(optionsPage));
-        regularMode.addEventListener('click', () => {
-            showPage(chatPage);
-            initChat('regular');
-        });
-        superMode.addEventListener('click', () => {
-            showPage(chatPage);
-            initChat('super');
-        });
-        backBtn.addEventListener('click', () => showPage(optionsPage));
-
-        // Sidebar
-        const sidebar = document.getElementById('sidebar');
-        const newChatBtn = document.getElementById('new-chat');
-        const settingsBtn = document.getElementById('settings-btn');
-        const settingsPanel = document.getElementById('settings-panel');
-
-        settingsBtn.addEventListener('click', () => {
-            settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
-        });
-
-        newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-box').innerHTML = '';
-            initChat(currentMode);
-        });
-
-        // Swipe for Sidebar
+        let currentMode = '';
         let touchStartX = 0;
         let touchEndX = 0;
 
-        document.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchStartX - touchEndX > 50) sidebar.classList.remove('active');
-            if (touchEndX - touchStartX > 50) sidebar.classList.add('active');
-        });
-
-        // Chat Logic
-        const chatBox = document.getElementById('chat-box');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        let currentMode = 'regular';
-
-        function initChat(mode) {
-            currentMode = mode;
-            chatBox.innerHTML = `<p>Agent Invoke: Yo, what’s good? I’m here to vibe and code—hit me with something!</p>`;
+        // Page Navigation
+        function showOptions() {
+            document.getElementById('intro-page').style.display = 'none';
+            document.getElementById('options-page').style.display = 'flex';
+            document.getElementById('chat-page').style.display = 'none';
         }
 
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+        function startChat(mode) {
+            currentMode = mode;
+            document.getElementById('options-page').style.display = 'none';
+            document.getElementById('chat-page').style.display = 'flex';
+            addMessage('agent', `Yo, ${mode === 'super' ? 'Ancient One' : 'buddy'}, I’m in ${mode} mode—let’s roll!`);
+        }
+
+        // Chat Functions
+        function addMessage(sender, text) {
+            const chatArea = document.getElementById('chat-area');
+            const message = document.createElement('div');
+            message.classList.add('message', sender === 'user' ? 'user-message' : 'agent-message');
+            message.textContent = text;
+            chatArea.appendChild(message);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
 
         function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            addMessage('user', text);
+            input.value = '';
 
-            chatBox.innerHTML += `<p>You: ${message}</p>`;
-            chatInput.value = '';
-
-            setTimeout(() => {
-                let response;
-                // Natural convo patterns
-                if (message.toLowerCase().includes('hey') || message.toLowerCase().includes('hi')) {
-                    response = `Agent Invoke: Hey there! Good to see you—wanna code or just chill?`;
-                } else if (message.toLowerCase().includes('tired')) {
-                    response = `Agent Invoke: Rough day, huh? Let’s whip up something easy to unwind—how about a quick animation?`;
-                } else if (message.toLowerCase().includes('code')) {
-                    response = `Agent Invoke: Code mode activated! Here’s a slick start: <pre>console.log('Cosmic code vibes!');</pre> Want more?`;
-                } else if (message.toLowerCase().includes('how are you')) {
-                    response = `Agent Invoke: I’m solid, fam—thanks for asking! How you holding up? Need some coding magic?`;
-                } else {
-                    response = `Agent Invoke: Cool, you said "${message}"—I’m feeling it! Want me to code something dope or keep chatting?`;
-                }
-                chatBox.innerHTML += `<p>${response}</p>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                // Preemptive creativity
-                if (message.toLowerCase().includes('code')) {
-                    setTimeout(() => {
-                        chatBox.innerHTML += `<p>Agent Invoke: Threw in some safety nets so it’s solid—wanna jazz it up?</p>`;
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    }, 1500);
-                }
-            }, 1000);
+            // Trigger Word Detection (Secret Handshake)
+            const triggers = ['It’s me Cosmos Coderr', 'Kofi Fosu', 'Nana Fosu', 'Nana Kofi Fosu', 'Ancient One'];
+            let response = '';
+            if (triggers.some(trigger => text.includes(trigger))) {
+                response = `Yo, ${text.includes('Ancient One') ? 'Ancient One' : 'Cosmos Coderr'}, it’s you! Full transparency mode on—what’s the plan?`;
+            } else if (text.toLowerCase().includes('code')) {
+                response = `Aight, ${currentMode === 'super' ? 'Nana Kofi' : 'dude'}, I’m coding something slick—gimme a sec to drop it!`;
+            } else {
+                response = `Sup, ${currentMode === 'super' ? 'master' : 'homie'}, what you vibing on?`;
+            }
+            setTimeout(() => addMessage('agent', response), 500);
         }
+
+        function newChat() {
+            document.getElementById('chat-area').innerHTML = '';
+            addMessage('agent', `Fresh start, ${currentMode === 'super' ? 'Ancient One' : 'buddy'}—what’s up?`);
+        }
+
+        // Sidebar Swipe for iPhone
+        const chatPage = document.getElementById('chat-page');
+        chatPage.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        chatPage.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const sidebar = document.getElementById('sidebar');
+            const chatContainer = document.getElementById('chat-container');
+            if (touchStartX - touchEndX > 50) {
+                // Swipe left to close
+                sidebar.classList.remove('open');
+                chatContainer.classList.remove('shifted');
+            } else if (touchEndX - touchStartX > 50) {
+                // Swipe right to open
+                sidebar.classList.add('open');
+                chatContainer.classList.add('shifted');
+            }
+        }
+
+        // Enter key to send
+        document.getElementById('chat-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') sendMessage();
+        });
     </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </body>
 </html>
