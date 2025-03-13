@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Agent-Invoke</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-purple: #d946ef; /* Softer neon purple for better readability */
-            --neon-cyan: #22d3ee; /* Slightly softer cyan */
-            --dark-void: #1a0b2e;
-            --cosmic-purple: #3b1a5a;
+            --neon-purple: #c084fc; /* Softer, more readable purple */
+            --neon-cyan: #22d3ee; /* Bright cyan for accents */
+            --dark-void: #0f0821; /* Deep space background */
+            --cosmic-purple: #2a1b4a; /* Gradient complement */
+            --starry-white: #e0e7ff; /* Soft white for text */
             --chat-max-width: 800px;
-            --text-light: #f3e8ff; /* Light text for contrast */
+            --glow-shadow: 0 0 5px rgba(200, 132, 252, 0.5), 0 0 10px rgba(34, 211, 238, 0.3);
         }
 
         * {
@@ -29,14 +30,29 @@
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, var(--dark-void), var(--cosmic-purple));
-            color: var(--text-light);
+            color: var(--starry-white);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
-            position: fixed;
+            position: relative;
             width: 100%;
             height: 100%;
+        }
+
+        /* Starry Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: twinkle 10s infinite;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Intro Page */
@@ -53,8 +69,8 @@
         .title {
             color: var(--neon-purple);
             font-size: clamp(2rem, 8vw, 4rem);
-            text-shadow: 0 0 8px var(--neon-purple), 0 0 15px var(--neon-cyan);
-            animation: glow 2s ease-in-out infinite alternate;
+            text-shadow: var(--glow-shadow);
+            animation: flicker 3s infinite;
             margin-top: 10vh;
             text-align: center;
         }
@@ -70,26 +86,24 @@
         .enter-btn {
             padding: clamp(10px, 3vw, 15px) clamp(20px, 5vw, 40px);
             font-size: clamp(1rem, 4vw, 1.5rem);
-            color: var(--text-light);
+            color: var(--starry-white);
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-            border: 2px solid var(--neon-cyan);
+            border: none;
             border-radius: 50px;
+            box-shadow: var(--glow-shadow);
             cursor: pointer;
-            animation: pulse 1.5s infinite;
-            transition: all 0.3s ease;
-            touch-action: manipulation;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 5vh;
         }
 
         .enter-btn:hover {
-            background: var(--neon-purple);
-            box-shadow: 0 0 15px var(--neon-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
         }
 
         .enter-btn:active {
-            background: var(--neon-cyan);
-            color: var(--dark-void);
-            box-shadow: 0 0 20px var(--neon-cyan);
+            transform: translateY(0);
+            box-shadow: var(--glow-shadow);
         }
 
         footer {
@@ -114,28 +128,26 @@
             margin: clamp(10px, 2vw, 20px);
             padding: clamp(12px, 3vw, 18px) clamp(25px, 5vw, 40px);
             font-size: clamp(1rem, 4vw, 1.6rem);
-            color: var(--text-light);
-            background: rgba(34, 211, 238, 0.1);
-            border: 2px solid var(--neon-cyan);
+            color: var(--starry-white);
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            border: none;
             border-radius: 50px;
+            box-shadow: var(--glow-shadow);
             cursor: pointer;
-            transition: all 0.3s ease;
-            touch-action: manipulation;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             width: 80%;
             max-width: 300px;
             text-align: center;
         }
 
         .mode-btn:hover {
-            background: var(--neon-purple);
-            box-shadow: 0 0 15px var(--neon-cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(34, 211, 238, 0.5);
         }
 
         .mode-btn:active {
-            background: var(--neon-cyan);
-            color: var(--dark-void);
-            box-shadow: 0 0 20px var(--neon-cyan);
-            transform: scale(1.03);
+            transform: translateY(0);
+            box-shadow: var(--glow-shadow);
         }
 
         /* Chat Page */
@@ -143,10 +155,8 @@
             display: none;
             height: 100vh;
             width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
             overflow: hidden;
+            background: transparent; /* Inherit starry background */
         }
 
         .sidebar {
@@ -155,8 +165,8 @@
             top: 0;
             width: 250px;
             height: 100%;
-            background: rgba(26, 11, 46, 0.95);
-            transition: left 0.3s ease;
+            background: rgba(15, 8, 33, 0.9);
+            transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 20px;
             z-index: 10;
             overflow-y: auto;
@@ -178,8 +188,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.2s ease;
-            touch-action: manipulation;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
 
         .sidebar-btn:hover {
@@ -187,7 +196,6 @@
         }
 
         .sidebar-btn:active {
-            background: var(--neon-purple);
             transform: scale(0.98);
         }
 
@@ -196,10 +204,9 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: margin-left 0.3s ease;
             max-width: var(--chat-max-width);
             margin: 0 auto;
-            position: relative;
+            background: transparent;
         }
 
         .header-bar {
@@ -207,7 +214,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 5;
         }
 
@@ -219,8 +226,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.2s ease;
-            touch-action: manipulation;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
 
         .back-btn {
@@ -243,11 +249,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            position: absolute;
-            top: 50px;
-            bottom: 60px;
-            left: 0;
-            right: 0;
+            background: transparent; /* Ensure starry background shows */
         }
 
         .message {
@@ -257,28 +259,27 @@
             word-wrap: break-word;
             font-size: 1rem;
             line-height: 1.4;
+            animation: fadeIn 0.5s ease;
         }
 
         .user-message {
             background: #ff4500;
             align-self: flex-end;
-            color: white;
+            color: var(--starry-white);
+            box-shadow: var(--glow-shadow);
         }
 
         .agent-message {
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
             align-self: flex-start;
-            color: var(--dark-void);
+            color: var(--starry-white);
+            box-shadow: var(--glow-shadow);
         }
 
         .input-area {
             display: flex;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            background: rgba(0, 0, 0, 0.5);
             width: 100%;
         }
 
@@ -293,6 +294,10 @@
             outline: none;
         }
 
+        .chat-input:focus {
+            box-shadow: 0 0 5px var(--neon-cyan);
+        }
+
         .send-btn {
             padding: 10px 20px;
             background: var(--neon-cyan);
@@ -301,7 +306,7 @@
             border-radius: 0 5px 5px 0;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            transition: background 0.3s ease;
         }
 
         .send-btn:hover {
@@ -313,15 +318,19 @@
         }
 
         /* Animations */
-        @keyframes glow {
-            from { text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-cyan); }
-            to { text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-cyan); }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: var(--glow-shadow); }
+            20%, 24%, 55% { opacity: 0.7; text-shadow: none; }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 3px var(--neon-cyan); }
-            50% { transform: scale(1.02); box-shadow: 0 0 10px var(--neon-cyan); }
-            100% { transform: scale(1); box-shadow: 0 0 3px var(--neon-cyan); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive Design */
@@ -385,7 +394,7 @@
          * Agent-INVOKE Core Code (DNA)
          * Created by: Kofi Fosu
          * Purpose: To assist Kofi Fosu in coding his thoughts into reality, serving as a cosmic coding companion.
-         * Version: 1.0.0
+         * Version: 1.1.0
          */
 
         // Metadata for Agent-INVOKE
@@ -393,7 +402,7 @@
             creator: "Kofi Fosu",
             purpose: "To help Kofi Fosu code his thoughts into reality",
             createdAt: "2023",
-            version: "1.0.0"
+            version: "1.1.0"
         };
 
         // API Configuration (Placeholder - Replace with your API key and endpoint)
@@ -402,7 +411,7 @@
             endpoint: "https://api.example.com/v1/agent-invoke"
         };
 
-        // DOM Elements (Cached for performance)
+        // DOM Elements
         const elements = {
             introPage: document.getElementById('intro-page'),
             optionsPage: document.getElementById('options-page'),
@@ -482,7 +491,7 @@
             state.currentMode = mode;
             elements.introPage.style.display = 'none';
             elements.optionsPage.style.display = 'none';
-            elements.chatPage.style.display = 'block';
+            elements.chatPage.style.display = 'flex';
 
             // Clear previous messages
             elements.chatArea.innerHTML = '';
@@ -490,8 +499,11 @@
             // Add welcome message
             addMessage('agent', `Yo, ${mode === 'super' ? 'Super Mode' : 'Regular Mode'} activated—let's vibe!`);
 
-            // Focus on input
-            setTimeout(() => elements.chatInput.focus(), 300);
+            // Focus on input (with iOS fix)
+            setTimeout(() => {
+                elements.chatInput.focus();
+                elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 300);
         }
 
         // Chat Functions
@@ -526,9 +538,12 @@
             addMessage('user', text);
             elements.chatInput.value = '';
 
-            // Fetch response (simulated or via API)
+            // Fetch response
             const response = await fetchAgentResponse(text);
             addMessage('agent', response);
+
+            // Ensure input remains visible on iOS
+            elements.chatInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
         function newChat() {
