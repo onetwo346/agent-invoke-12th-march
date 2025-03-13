@@ -532,7 +532,7 @@
             const swipeDistance = state.touchEndX - state.touchStartX;
             if (Math.abs(swipeDistance) > swipeThreshold) {
                 // Only allow swipe right to open sidebar, remove swipe left
-                if (swipeDistance > 0 && !elements.sidebar.classList.contains('open')) {
+                if (swipeDistance < 0 && !elements.sidebar.classList.contains('open')) {
                     elements.sidebar.classList.add('open');
                 }
             }
